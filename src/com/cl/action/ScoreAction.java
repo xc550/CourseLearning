@@ -32,7 +32,7 @@ public class ScoreAction extends ActionSupport {
 			columns.add(SectionColumns[i]);
 		SectionCalc sectioncalc = new SectionCalc(section_id, -1);
 		ArrayList<SectionScore> res = sectioncalc.getAl();
-		String section_name = Section.getSection(section_id).getSection_name();
+		String section_name = Section.getSectionBySectionId(section_id).getSection_name();
 		
 		for (int i = 0; i < res.size(); i++) {
 			res.get(i).setListening(new BigDecimal(res.get(i).getListening()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -56,8 +56,8 @@ public class ScoreAction extends ActionSupport {
 		
 		for (int i = 0; i < sectionscore.size(); i++) {
 			sectionscore.get(i).setSection_id(section_id);
+			SectionScore.updateSectionScoreList(sectionscore.get(i));
 		}
-		SectionScore.updateSectionScoreList(sectionscore);
 		return SUCCESS;
 	}
 	
@@ -93,7 +93,9 @@ public class ScoreAction extends ActionSupport {
 			}
 		}
 		
-		SectionScore.updateSectionScoreList(res);
+		for (int i = 0; i < res.size(); i++) {
+			SectionScore.updateSectionScoreList(res.get(i));
+		}
 //		ServletActionContext.getRequest().setAttribute("homework_id", homework_id);
 		act.getSession().put("homework_id", homework_id);
 		return SUCCESS;

@@ -49,14 +49,14 @@ public class SectionAction extends ActionSupport {
 			class_id = ((Integer)act.getSession().get("class_id")).intValue();
 		}
 		else if (role.equals("student")) {
-			int user_id = Student.getStudentByLoginName(username).getId();
-			class_id = CourseStudent.getCourseStudentByCourseId(course_id, user_id).getClass_id();
+			int user_id = Student.getStudentByLoginname(username).getId();
+			class_id = CourseStudent.getCourseStudentByCourseIdAndStudentId(course_id, user_id).getClass_id();
 		}
 		else {
-			int user_id = Teacher.getTeacherByLoginName(username).getId();
+			int user_id = Teacher.getTeacherByLoginname(username).getId();
 			class_id = CourseTeacher.getCourseTeacherByCourseIdAndTeacherId(course_id, user_id).getClass_id();
 		}
-		ArrayList<Section> res = Section.getSectionList(course_id);
+		ArrayList<Section> res = Section.getSectionListByCourseId(course_id);
 		
 		act.put("sectionlist", res);
 		act.getSession().put("class_id", class_id);
@@ -144,8 +144,8 @@ public class SectionAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		int section_id = ((Integer)act.getSession().get("section_id")).intValue();
 		String loginname = (String)act.getSession().get("username");
-		String section_name = (section_id == 0 ? "课程总结" : Section.getSection(section_id).getSection_name());
-		int student_id = Student.getStudentByLoginName(loginname).getId();
+		String section_name = (section_id == 0 ? "课程总结" : Section.getSectionBySectionId(section_id).getSection_name());
+		int student_id = Student.getStudentByLoginname(loginname).getId();
 		if (section_id != 0) {
 			ArrayList<String> columns = new ArrayList<>();
 			for (int i = 2; i < SectionColumns.length; i++)
@@ -166,13 +166,13 @@ public class SectionAction extends ActionSupport {
 		}
 		else {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-			ArrayList<Section> section = Section.getSectionList(course_id);
+			ArrayList<Section> section = Section.getSectionListByCourseId(course_id);
 			ArrayList<String> columns = new ArrayList<>();
 			for (int i = 0; i < section.size(); i++)
 				columns.add(section.get(i).getSection_name());
 			columns.add("总评");
 			
-			ArrayList<SectionScore> tmp = SectionScore.getSectionScoreListByStudentId(student_id, course_id);
+			ArrayList<SectionScore> tmp = SectionScore.getSectionScoreListByStudentIdAndCourseId(student_id, course_id);
 			ArrayList<CourseScore> res = new ArrayList<>();
 			CourseScore e = new CourseScore();
 			e.setCourse_id(course_id);

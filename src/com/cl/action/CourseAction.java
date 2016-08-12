@@ -33,9 +33,9 @@ public class CourseAction extends ActionSupport {
 		if (role.equals("manager"))
 			courselist = Course.getCourseList();
 		else if (role.equals("student"))
-			courselist = CourseStudent.getCourseListByStudentId(Student.getStudentByLoginName(username).getId());
+			courselist = CourseStudent.getCourseListByStudentId(Student.getStudentByLoginname(username).getId());
 		else if (role.equals("teacher"))
-			courselist = CourseTeacher.getCourseListByTeacherId(Teacher.getTeacherByLoginName(username).getId());
+			courselist = CourseTeacher.getCourseListByTeacherId(Teacher.getTeacherByLoginname(username).getId());
 		
 		act.put("courselist", courselist);
 		act.getSession().remove("course_id");
@@ -64,9 +64,9 @@ public class CourseAction extends ActionSupport {
 		String loginname = (String)act.getSession().get("username");
 		HashMap<Integer, ArrayList<CourseTeacher>> map = new HashMap<Integer, ArrayList<CourseTeacher>>();
 		if (role.equals("student"))
-			courseselected = CourseStudent.getCourseListByStudentId(Student.getStudentByLoginName(loginname).getId());
+			courseselected = CourseStudent.getCourseListByStudentId(Student.getStudentByLoginname(loginname).getId());
 		else if (role.equals("teacher"))
-			courseselected = CourseTeacher.getCourseListByTeacherId(Teacher.getTeacherByLoginName(loginname).getId());
+			courseselected = CourseTeacher.getCourseListByTeacherId(Teacher.getTeacherByLoginname(loginname).getId());
 		for (int i = 0; i < courselist.size(); i++) {
 			for (int j = 0; j < courseselected.size(); j++) {
 				if (courseselected.get(j).getCourse_id() == courselist.get(i).getCourse_id()) {
@@ -79,7 +79,7 @@ public class CourseAction extends ActionSupport {
 		for (int i = 0; i < courselist.size(); i++) {
 			int course_id = courselist.get(i).getCourse_id();
 			ArrayList<CourseTeacher> res = CourseTeacher.getCourseTeacherByCourseId(course_id);
-			System.out.println(Course.getCourse(course_id).getCourse_name());
+			System.out.println(Course.getCourseByCourseId(course_id).getCourse_name());
 			for (int j = 0; j < res.size(); j++) {
 				System.out.println("teacher: " + res.get(j).getId());
 			}
@@ -99,11 +99,11 @@ public class CourseAction extends ActionSupport {
 		String loginname = (String)act.getSession().get("username");
 		int user_id = -1;
 		if (role.equals("student")) {
-			user_id = Student.getStudentByLoginName(loginname).getId();
+			user_id = Student.getStudentByLoginname(loginname).getId();
 			CourseStudent.addCourseStudent(course_id, class_id, user_id);
 		}
 		else if (role.equals("teacher")) {
-			user_id = Teacher.getTeacherByLoginName(loginname).getId();
+			user_id = Teacher.getTeacherByLoginname(loginname).getId();
 			CourseTeacher.addCourseTeacher(course_id, class_id, user_id);
 		}
 		else {
@@ -118,11 +118,11 @@ public class CourseAction extends ActionSupport {
 		String loginname = (String)ServletActionContext.getRequest().getSession().getAttribute("username");
 		int user_id = -1;
 		if (role.equals("student")) {
-			user_id = Student.getStudentByLoginName(loginname).getId();
-			CourseStudent.deleteCourseStudentOne(course_id, user_id);
+			user_id = Student.getStudentByLoginname(loginname).getId();
+			CourseStudent.deleteCourseStudentByCourseIdAndStudentId(course_id, user_id);
 		}
 		else if (role.equals("teacher")) {
-			user_id = Teacher.getTeacherByLoginName(loginname).getId();
+			user_id = Teacher.getTeacherByLoginname(loginname).getId();
 			CourseTeacher.deleteCourseTeacherOne(course_id, user_id);
 		}
 		else {

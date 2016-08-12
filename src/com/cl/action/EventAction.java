@@ -47,7 +47,7 @@ public class EventAction extends ActionSupport {
 //		get student bbs
 		ArrayList<BBS> bbs = BBS.getBBSListByEventId(event_id);
 		
-		Event eve = Event.getEvent(event_id);
+		Event eve = Event.getEventByEventId(event_id);
 		
 		act.getSession().put("event_id", new Integer(event_id));
 		act.put("learningstatuscolumns", columns);
@@ -68,19 +68,19 @@ public class EventAction extends ActionSupport {
 			event_id = ((Integer)act.getSession().get("event_id")).intValue();
 				
 		String loginname = (String)act.getSession().get("username");
-		int student_id = Student.getStudentByLoginName(loginname).getId();
+		int student_id = Student.getStudentByLoginname(loginname).getId();
 
 		ArrayList<String> columns = new ArrayList<>();
 		for (int i = 2; i < LearnintStatusColumns.length; i++)
 			columns.add(LearnintStatusColumns[i]);
 		
 //		get student learning status
-		LearningStatus ls = LearningStatus.getLearingStatusListByStudentId(student_id, event_id);
+		LearningStatus ls = LearningStatus.getLearingStatusListByStudentIdAndEventId(student_id, event_id);
 		
 //		get student bbs
 		ArrayList<BBS> bbs = BBS.getBBSListByEventId(event_id);
 		
-		Event eve = Event.getEvent(event_id);
+		Event eve = Event.getEventByEventId(event_id);
 		
 		act.getSession().put("event_id", new Integer(event_id));
 		act.put("learningstatuscolumns", columns);
@@ -121,8 +121,8 @@ public class EventAction extends ActionSupport {
 		ArrayList<Event> res = new ArrayList<>();
 		String section_name;
 		if (section_id > 0) {
-			res = Event.getEventList(section_id);
-			section_name = Section.getSection(section_id).getSection_name();
+			res = Event.getEventListBySectionId(section_id);
+			section_name = Section.getSectionBySectionId(section_id).getSection_name();
 		}
 		else {
 			section_name = "总结";

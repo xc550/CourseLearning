@@ -21,7 +21,7 @@ public class CourseUserAction extends ActionSupport {
 			course_id = (new Integer(ServletActionContext.getRequest().getParameter("course_id"))).intValue();
 		else if (act.getSession().get("course_id") != null)
 			course_id = ((Integer)act.getSession().get("course_id")).intValue();
-		Course course = Course.getCourse(course_id);
+		Course course = Course.getCourseByCourseId(course_id);
 		ArrayList<CourseTeacher> courseteacher = CourseTeacher.getCourseTeacherByCourseId(course_id);
 		ArrayList<Teacher> teacherlist = Teacher.getTeacherList();
 		
@@ -61,7 +61,7 @@ public class CourseUserAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		System.out.println("course_id in session: " + act.getSession().get("course_id"));
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-		int classcapacity = Course.getCourse(course_id).getCourse_classcapacity();
+		int classcapacity = Course.getCourseByCourseId(course_id).getCourse_classcapacity();
 		String action = ServletActionContext.getRequest().getParameter("action");
 		System.out.println(classcapacity);
 		if (action.equals("add"))

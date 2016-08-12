@@ -37,7 +37,7 @@ public class ViewChartAction extends ActionSupport {
 	
 	private DefaultPieDataset getDataSet(Pie pie) {
 		DefaultPieDataset dpd = new DefaultPieDataset();
-		ArrayList<PiePart> part = pie.getAl();
+		ArrayList<PiePart> part = pie.getParts();
 		for (int i = 0; i < part.size(); i++) {
 			if (part.get(i).getPartnumb() != 0)
 				dpd.setValue(part.get(i).getPartname(), part.get(i).getPartnumb());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.struts2.ServletActionContext;
 import com.cl.dao.Student;
+import com.cl.util.PageManager;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -40,30 +41,20 @@ public class StudentAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		
 		ArrayList<Student> studentlist = Student.getStudentList();
-		int each = 2;
-		int totalcolumn = (studentlist.size() % each == 0 ? studentlist.size() / each : studentlist.size() / each + 1);
+		PageManager pm = new PageManager();
+		pm.setEach(10);
+		pm.setTotalsize(studentlist.size());
 		int nowcolumn = 1;
 		if (ServletActionContext.getRequest().getParameter("column") != null)
 			nowcolumn = (new Integer(ServletActionContext.getRequest().getParameter("column"))).intValue();
-		int precolumn = nowcolumn - 2;
-		int nextcolumn = nowcolumn + 2;
-		while (precolumn < 1) {
-			precolumn++;
-			nextcolumn++;
-		}
-		while (nextcolumn > totalcolumn) {
-			precolumn--;
-			nextcolumn--;
-		}
-		while (precolumn < 1) {
-			precolumn++;
-		}
-
-		act.put("each", each);
-		act.put("nowcolumn", nowcolumn);
-		act.put("totalcolumn", totalcolumn);
-		act.put("nextcolumn", nextcolumn);
-		act.put("precolumn", precolumn);
+		pm.setNowcolumn(nowcolumn);
+		pm.calcPreColumnAndNextColumn();
+		
+		act.put("each", pm.getEach());
+		act.put("nowcolumn", pm.getNowcolumn());
+		act.put("totalcolumn", pm.getTotalcolumn());
+		act.put("nextcolumn", pm.getNextcolumn());
+		act.put("precolumn", pm.getPrecolumn());
 		act.put("studentcolumns", columns);
 		act.put("studentlist", studentlist);
 		return SUCCESS;

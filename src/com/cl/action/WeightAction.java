@@ -6,13 +6,12 @@ import org.apache.struts2.ServletActionContext;
 
 import com.cl.dao.KnowledgeWeight;
 import com.cl.dao.Section;
-import com.cl.dao.SectionWeight;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class WeightAction extends ActionSupport {
 	private KnowledgeWeight knowledgeweight;
-	private ArrayList<SectionWeight> sectionweight = new ArrayList<>();
+	private ArrayList<Section> section = new ArrayList<>();
 	private final String[] Columns = {"课堂听讲", "课堂回答问题", "考勤", "作业", "实验", "复习预习", "总评"};
 	
 	public KnowledgeWeight getKnowledgeweight() {
@@ -23,12 +22,12 @@ public class WeightAction extends ActionSupport {
 		this.knowledgeweight = knowledgeweight;
 	}
 	
-	public ArrayList<SectionWeight> getSectionweight() {
-		return sectionweight;
+	public ArrayList<Section> getSection() {
+		return section;
 	}
 
-	public void setSectionweight(ArrayList<SectionWeight> sectionweight) {
-		this.sectionweight = sectionweight;
+	public void setSection(ArrayList<Section> section) {
+		this.section = section;
 	}
 
 	public String getWeight() throws Exception {
@@ -51,7 +50,7 @@ public class WeightAction extends ActionSupport {
 				kw.setExperiment_weight(0.2);
 				kw.setHomework_weight(0.12);
 				kw.setReviewandpreview_weight(0.08);
-				KnowledgeWeight.addKnowledgeWeightBySectionId(kw);
+				KnowledgeWeight.addKnowledgeWeight(kw);
 			}
 			
 			ArrayList<String> columns = new ArrayList<>();
@@ -62,11 +61,11 @@ public class WeightAction extends ActionSupport {
 		}
 		else {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-			ArrayList<SectionWeight> res = SectionWeight.getSectionWeightList(course_id);
+			ArrayList<Section> res = Section.getSectionListByCourseId(course_id);
 			
 			ArrayList<String> columns = new ArrayList<>();
 			for (int i = 0; i < res.size(); i++)
-				columns.add(Section.getSection(res.get(i).getSection_id()).getSection_name());
+				columns.add(Section.getSectionBySectionId(res.get(i).getSection_id()).getSection_name());
 			act.put("columns", columns);
 			act.getSession().put("weightlist", res);
 		}
@@ -90,14 +89,14 @@ public class WeightAction extends ActionSupport {
 		}
 		else {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-			ArrayList<SectionWeight> former = (ArrayList<SectionWeight>)act.getSession().get("weightlist");
-			ArrayList<SectionWeight> now = getSectionweight();
+			ArrayList<Section> former = (ArrayList<Section>)act.getSession().get("weightlist");
+			ArrayList<Section> now = getSection();
 
 			for (int i = 0; i < former.size(); i++) {
 				now.get(i).setSection_id(former.get(i).getSection_id());
 				now.get(i).setCourse_id(course_id);
+				Section.updateSection(now.get(i));
 			}
-			SectionWeight.updateWeight(now);
 		}
 		return SUCCESS;
 	}

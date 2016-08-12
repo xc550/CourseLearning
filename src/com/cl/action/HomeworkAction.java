@@ -70,19 +70,22 @@ public class HomeworkAction extends ActionSupport {
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 		String username = (String)act.getSession().get("username");
 		String role = (String)act.getSession().get("role");
-		int user_id = -1, class_id;
+		int user_id = -1, class_id = -1;
 		if (role.equals("student"))
-			user_id = Student.getStudentByLoginName(username).getId();
+			user_id = Student.getStudentByLoginname(username).getId();
 		else if (role.equals("teacher"))
-			user_id = Teacher.getTeacherByLoginName(username).getId();
-		class_id
-		ArrayList<Homework> homework = Homework.getHomeworkList(course_id, class_id);
+			user_id = Teacher.getTeacherByLoginname(username).getId();
+		if (ServletActionContext.getRequest().getParameter("class_id") != null)
+			class_id = (new Integer(ServletActionContext.getRequest().getParameter("class_id"))).intValue();
+		else if (act.getSession().get("class_id") != null)
+			class_id =((Integer)act.getSession().get("class_id")).intValue();
+		ArrayList<Homework> homework = Homework.getHomeworkListByCourseIdAndClassId(course_id, class_id);
 		homework.sort(new Comparator<Homework>() {
 			public int compare(Homework a, Homework b) {
 				return a.getSection_id() - b.getSection_id();
 			}
 		});
-		ArrayList<Section> sectionlist = Section.getSectionList(course_id);
+		ArrayList<Section> sectionlist = Section.getSectionListByCourseId(course_id);
 		
 		act.put("sectionlist", sectionlist);
 		act.put("homeworklist", homework);
@@ -97,13 +100,13 @@ public class HomeworkAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		int homeworkstudent_id = (new Integer(ServletActionContext.getRequest().getParameter("homeworkstudent_id"))).intValue();
 		String loginname = (String)act.getSession().get("username");
-		int student_id = Student.getStudentByLoginName(loginname).getId();
+		int student_id = Student.getStudentByLoginname(loginname).getId();
 		HomeworkStudent hws = HomeworkStudent.getHomeworkStudentByHomeworkStudentId(homeworkstudent_id);
 		String accessory = hws.getHomeworkstudent_accessory();
 		String filename = ServletActionContext.getServletContext().getRealPath("/WEB-INF/upload");
 		filename += File.separator + "student_" + hws.getHomework_id() + "_" + student_id + "_" + accessory;
 		
-		HomeworkStudent.deleteHomeworkStudent(homeworkstudent_id);
+		HomeworkStudent.deleteHomeworkStudentByHomeworkStudentId(homeworkstudent_id);
 		FileFunc.deleteFile(filename);
 		return SUCCESS;
 	}
@@ -113,7 +116,7 @@ public class HomeworkAction extends ActionSupport {
 	 */
 	public String submitHomework() throws Exception {
 		int homework_id = new Integer(ServletActionContext.getRequest().getParameter("homework_id")).intValue();
-		int student_id = Student.getStudentByLoginName((String)ServletActionContext.getRequest().getSession().getAttribute("username")).getId();
+		int student_id = Student.getStudentByLoginname((String)ServletActionContext.getRequest().getSession().getAttribute("username")).getId();
 		HomeworkStudent hws = HomeworkStudent.getInstance();
 		hws.setHomeworkstudent_comment(getHomeworkcomment());
 		hws.setHomework_id(homework_id);
@@ -142,7 +145,11 @@ public class HomeworkAction extends ActionSupport {
 		int homework_id = (new Integer(ServletActionContext.getRequest().getParameter("homework_id"))).intValue();
 		String accessory = Homework.getHomeworkByHomeworkId(homework_id).getHomework_accessory();
 		int course_id = ((Integer)act.getSession().get("course_id"));
-		int class_id = 1;
+		int class_id = -1;
+		if (ServletActionContext.getRequest().getParameter("class_id") != null)
+			class_id = (new Integer(ServletActionContext.getRequest().getParameter("class_id"))).intValue();
+		else if (act.getSession().get("class_id") != null)
+			class_id =((Integer)act.getSession().get("class_id")).intValue();
 		String filename = ServletActionContext.getServletContext().getRealPath("/WEB-INF/upload");
 		filename += File.separator + "homework_" + course_id + "_" + class_id + "_" + accessory;
 		
@@ -155,8 +162,11 @@ public class HomeworkAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 		int homework_id = (new Integer(ServletActionContext.getRequest().getParameter("homework_id"))).intValue();
-//		int class_id = ((Integer)ServletActionContext.getRequest().getSession().getAttribute("class_id")).intValue();
-		int class_id = 1;
+		int class_id = -1;
+		if (ServletActionContext.getRequest().getParameter("class_id") != null)
+			class_id = (new Integer(ServletActionContext.getRequest().getParameter("class_id"))).intValue();
+		else if (act.getSession().get("class_id") != null)
+			class_id =((Integer)act.getSession().get("class_id")).intValue();
 		if (getUpload() != null) {
 			String filename = ServletActionContext.getServletContext().getRealPath("/WEB-INF/upload");
 			if (!FileFunc.directoryExist(filename))
@@ -178,8 +188,11 @@ public class HomeworkAction extends ActionSupport {
 	public String addHomework() throws Exception {
 		ActionContext act = ActionContext.getContext();
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-//		int class_id = ((Integer)ServletActionContext.getRequest().getSession().getAttribute("class_id")).intValue();
-		int class_id = 1;
+		int class_id = -1;
+		if (ServletActionContext.getRequest().getParameter("class_id") != null)
+			class_id = (new Integer(ServletActionContext.getRequest().getParameter("class_id"))).intValue();
+		else if (act.getSession().get("class_id") != null)
+			class_id =((Integer)act.getSession().get("class_id")).intValue();
 		Homework hw = getHomework();
 		
 		hw.setClass_id(class_id);
@@ -206,8 +219,11 @@ public class HomeworkAction extends ActionSupport {
 	public String updateHomework() throws Exception {
 		ActionContext act = ActionContext.getContext();
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-//		int class_id = ((Integer)ServletActionContext.getRequest().getSession().getAttribute("class_id")).intValue();
-		int class_id = 1;
+		int class_id = -1;
+		if (ServletActionContext.getRequest().getParameter("class_id") != null)
+			class_id = (new Integer(ServletActionContext.getRequest().getParameter("class_id"))).intValue();
+		else if (act.getSession().get("class_id") != null)
+			class_id =((Integer)act.getSession().get("class_id")).intValue();
 		int homework_id = (new Integer(ServletActionContext.getRequest().getParameter("homework_id"))).intValue();
 		Homework hw = getHomework();
 		hw.setHomework_id(homework_id);
@@ -235,11 +251,15 @@ public class HomeworkAction extends ActionSupport {
 		int homework_id = (new Integer(ServletActionContext.getRequest().getParameter("homework_id"))).intValue();
 		String accessory = Homework.getHomeworkByHomeworkId(homework_id).getHomework_accessory();
 		int course_id = ((Integer)act.getSession().get("course_id"));
-		int class_id = 1;
+		int class_id = -1;
+		if (ServletActionContext.getRequest().getParameter("class_id") != null)
+			class_id = (new Integer(ServletActionContext.getRequest().getParameter("class_id"))).intValue();
+		else if (act.getSession().get("class_id") != null)
+			class_id =((Integer)act.getSession().get("class_id")).intValue();
 		String filename = ServletActionContext.getServletContext().getRealPath("/WEB-INF/upload");
 		filename += File.separator + "homework_" + course_id + "_" + class_id + "_" + accessory;
 		
-		Homework.deleteHomework(homework_id);
+		Homework.deleteHomeworkByHomeworkId(homework_id);
 		FileFunc.deleteFile(filename);
 		return SUCCESS;
 	}
@@ -257,7 +277,7 @@ public class HomeworkAction extends ActionSupport {
 		else
 			homework_id = ((Integer)act.getSession().get("homework_id")).intValue();
 		
-		ArrayList<HomeworkStudent> res = HomeworkStudent.getHomeworkListStudentByHomeworkId(homework_id);
+		ArrayList<HomeworkStudent> res = HomeworkStudent.getHomeworkStudentListByHomeworkId(homework_id);
 		Homework hw = Homework.getHomeworkByHomeworkId(homework_id);
 		
 		act.put("homework", hw);

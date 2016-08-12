@@ -29,9 +29,9 @@ public class BBSAction extends ActionSupport {
 		String role = (String)act.getSession().get("role");
 		int student_id = -1, teacher_id = -1;
 		if (role.equals("student"))
-			student_id = Student.getStudentByLoginName(loginname).getId();
+			student_id = Student.getStudentByLoginname(loginname).getId();
 		else if (role.equals("teacher"))
-			teacher_id = Teacher.getTeacherByLoginName(loginname).getId();
+			teacher_id = Teacher.getTeacherByLoginname(loginname).getId();
 		
 		int event_id = ((Integer)act.getSession().get("event_id")).intValue();
 		int class_id = ((Integer)act.getSession().get("class_id")).intValue();
@@ -40,6 +40,7 @@ public class BBSAction extends ActionSupport {
 		
 		bbs.setStudent_id(student_id);
 		bbs.setTeacher_id(teacher_id);
+		bbs.setClass_id(class_id);
 		bbs.setEvent_id(event_id);
 		bbs.setReply_id(reply_id);
 		String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
