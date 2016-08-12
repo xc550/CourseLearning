@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="conststruts.devMode" value="true" />
+	<constant name="struts.multipart.saveDir" value="/tmp"/>
+	<constant name="struts.i18n.encoding" value="utf-8"/>
+	
+	<package name="default" extends="struts-default">
+		<!-- 下载 -->
+		<action name="main_homeworkdownload" class="com.cl.action.DownloadAction">
+			<result type="stream" name="success">
+				<param name="contentType">application/octet-stream;charset=ISO8859-1</param>
+				<param name="inputName">homeworkAccessory</param>
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+				<param name="bufferSizbe">1024*1024</param>
+			</result>
+		</action>
+		<action name="main_logdownload" class="com.cl.action.DownloadAction">
+			<result type="stream" name="success">
+				<param name="contentType">application/octet-stream;charset=ISO8859-1</param>
+				<param name="inputName">log</param>
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+				<param name="bufferSizbe">1024*1024</param>
+			</result>
+		</action>
+		<!-- 选课 -->
+		<action name="*_getcourseselection" class="com.cl.action.CourseAction"
+			method="listCourse">
+			<result>/WEB-INF/content/{1}/selectcourse.jsp</result>
+		</action>
+		<action name="*_selectcourse" class="com.cl.action.CourseAction"
+			method="selectCourse">
+			<result type="redirectAction">
+				<param name="actionName">{1}_getcourseselection</param>
+			</result>
+		</action>
+		<action name="*_notselectcourse" class="com.cl.action.CourseAction"
+			method="notselectCourse">
+			<result type="redirectAction">
+				<param name="actionName">{1}_getcourseselection</param>
+			</result>
+		</action>
+		<!-- 左侧列表 -->
+		<action name="sidebar_*_courselist" class="com.cl.action.CourseAction"
+			method="getCourseList">
+			<result>/WEB-INF/content/sidebar/{1}_courselist.jsp</result>
+		</action>
+		<action name="sidebar_*_sectionlist" class="com.cl.action.SectionAction"
+			method="getSectionListFromCourse">
+			<result>/WEB-INF/content/sidebar/{1}_sectionlist.jsp</result>
+		</action>
+		<action name="sidebar_*_eventlist" class="com.cl.action.EventAction"
+			method="getEventListFromSection">
+			<result>/WEB-INF/content/sidebar/{1}_eventlist.jsp</result>
+		</action>
+		
+		<action name="sidebar_*">
+			<result>/WEB-INF/content/sidebar/{1}.jsp</result>
+		</action>
+		<action name="main_*">
+			<result>/WEB-INF/content/{1}.jsp</result>
+		</action>
+	</package>
+	
+	
+	<package name="teacher" extends="struts-default,jfreechart-default">
+		<action name="teacher_login" class="com.cl.action.TeacherAction"
+			method="login">
+			<result name="error">/WEB-INF/content/error.jsp</result>
+			<result type="redirectAction">
+				<param name="actionName">teacher_welcome.action</param>
+			</result>
+		</action>
+		<action name="teacher_logout" class="com.cl.action.TeacherAction"
+			method="logout">
+			<result>/WEB-INF/content/index.jsp</result>
+		</action>
+		<!-- 作业 -->
+		<action name="teacher_managehomework" class="com.cl.action.HomeworkAction"
+			method="getHomeworkList">
+			<result>/WEB-INF/content/teacher/homework.jsp</result>
+		</action>
+		<action name="teacher_deletehomework" class="com.cl.action.HomeworkAction"
+			method="deleteHomework">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action>
+		<action name="teacher_deletehomeworkaccessory" class="com.cl.action.HomeworkAction"
+			method="deleteHomeworkAccessory">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action>
+		<action name="teacher_updatehomeworkaccessory" class="com.cl.action.HomeworkAction"
+			method="updataHomeworkAccessory">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action>
+		<action name="teacher_addhomework" class="com.cl.action.HomeworkAction"
+			method="addHomework">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action>
+		<action name="teacher_updatehomework" class="com.cl.action.HomeworkAction"
+			method="updateHomework">  
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action>
+		<action name="teacher_getstudenthomeworklist" class="com.cl.action.HomeworkAction"
+			method="getHomeworkOfStudent">
+			<result>/WEB-INF/content/teacher/scorehomework.jsp</result>
+		</action>
+		<action name="teacher_scorehomework" class="com.cl.action.ScoreAction"
+			method="updateHomeworkScore">
+			<result type="redirectAction">
+				<param name="actionName">teacher_getstudenthomeworklist.action</param>
+			</result>
+		</action>
+		<!-- 章节管理 -->
+		<action name="teacher_managesection" class="com.cl.action.SectionAction"
+			method="getSectionListFromCourse">
+			<result>/WEB-INF/content/teacher/managesection.jsp</result>
+		</action>
+		<action name="teacher_addsection" class="com.cl.action.SectionAction"
+			method="addSection">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managesection.action</param>
+			</result>
+		</action>
+		<action name="teacher_deletesection" class="com.cl.action.SectionAction"
+			method="deleteSection">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managesection.action</param>
+			</result>
+		</action>
+		<!-- 权值管理 -->
+		<action name="teacher_manage*weight" class="com.cl.action.WeightAction"
+			method="getWeight">
+			<result>/WEB-INF/content/teacher/update{1}weight.jsp</result>
+		</action>
+		<action name="teacher_update*weight" class="com.cl.action.WeightAction"
+			method="updateWeight">
+			<result type="redirectAction">
+				<param name="actionName">teacher_manage{1}weight.action</param>
+			</result>
+		</action>
+		<!-- 事件管理 -->
+		<action name="teacher_manageevent" class="com.cl.action.EventAction"
+			method="getEventListFromSection">
+			<result>/WEB-INF/content/teacher/manageevent.jsp</result>
+		</action>
+		<action name="teacher_addevent" class="com.cl.action.EventAction"
+			method="saveEvent">
+			<result type="redirectAction">
+				<param name="actionName">teacher_manageevent.action</param>
+			</result>
+		</action>
+		<action name="teacher_deleteevent" class="com.cl.action.EventAction"
+			method="deleteEvent">
+			<result type="redirectAction">
+				<param name="actionName">teacher_manageevent.action</param>
+			</result>
+		</action>
+		<!-- 事件详情 -->
+		<action name="teacher_geteventinfo" class="com.cl.action.EventAction"
+			method="getEventInfoForTeacher">
+			<result>/WEB-INF/content/teacher/eventinfo.jsp</result>
+		</action>
+		<action name="teacher_displayChart" class="com.cl.action.ViewChartAction">
+			<result name="success" type="chart">
+				<param name="height">240</param>
+				<param name="width">240</param>
+			</result>
+		</action>
+		<action name="teacher_submitbbs" class="com.cl.action.BBSAction"
+			method="submitBBS">
+			<result type="redirectAction">
+				<param name="actionName">teacher_geteventinfo.action</param>
+			</result>
+		</action>
+		<!-- 评分 -->
+		<action name="teacher_getscore" class="com.cl.action.ScoreAction"
+			method="getScore">
+			<result>/WEB-INF/content/teacher/score.jsp</result>
+		</action>
+		<action name="teacher_updatescore" class="com.cl.action.ScoreAction"
+			method="updateScore">
+			<result type="redirectAction">
+				<param name="actionName">teacher_getscore.action</param>
+			</result>
+		</action>
+		<!-- 总结 -->
+		<action name="teacher_getsectionsummary" class="com.cl.action.SectionAction"
+			method="getSectionSummaryForTeacher">
+			<result>/WEB-INF/content/teacher/summary.jsp</result>
+		</action>
+		<action name="teacher_*">
+			<result>/WEB-INF/content/teacher/{1}.jsp</result>
+		</action>
+	</package>
+	
+	<package name="student" extends="struts-default">
+		<action name="student_login" class="com.cl.action.StudentAction"
+			method="login">
+			<result name="error">/WEB-INF/content/error.jsp</result>
+			<result type="redirectAction">
+				<param name="actionName">student_welcome.action</param>
+			</result>
+		</action>
+		<action name="student_logout" class="com.cl.action.StudentAction"
+			method="logout">
+			<result>/WEB-INF/content/index.jsp</result>
+		</action>
+		<!-- 事件详情 -->
+		<action name="student_geteventinfo" class="com.cl.action.EventAction"
+			method="getEventInfoForStudent">
+			<result>/WEB-INF/content/student/eventinfo.jsp</result>
+		</action>
+		<action name="student_submitlearningstatus" class="com.cl.action.LearningStatusAction"
+			method="submitLearningStatus">
+			<result type="redirectAction">
+				<param name="actionName">student_geteventinfo.action</param>
+			</result>
+		</action>
+		<action name="student_submitbbs" class="com.cl.action.BBSAction"
+			method="submitBBS">
+			<result type="redirect">student_geteventinfo.action</result>
+		</action>
+		<!-- 作业 -->
+		<action name="student_gethomework" class="com.cl.action.HomeworkAction"
+			method="getHomeworkList">
+			<result>/WEB-INF/content/student/homework.jsp</result>
+		</action>
+		<action name="student_deletehomework" class="com.cl.action.HomeworkAction"
+			method="deleteHomeworkOfStudent">
+			<result type="redirectAction">
+				<param name="actionName">student_gethomework.action</param>
+			</result>
+		</action>
+		<action name="student_submithomework" class="com.cl.action.HomeworkAction"
+			method="submitHomework">
+			<result type="redirect">student_gethomework.action</result>
+		</action>
+		<!-- 总结 -->
+		<action name="student_getsectionsummary" class="com.cl.action.SectionAction"
+			method="getSectionSummaryForStudent">
+			<result>/WEB-INF/content/student/summary.jsp</result>
+		</action>
+		<action name="student_*">
+			<result>/WEB-INF/content/student/{1}.jsp</result>
+		</action>
+	</package>
+	
+	<package name="manager" extends="struts-default">
+		<action name="manager_login" class="com.cl.action.ManagerAction"
+			method="login">
+			<result name="error">/WEB-INF/content/error.jsp</result>
+			<result type="redirectAction">
+				<param name="actionName">manager_welcome</param>
+			</result>
+		</action>
+		<action name="manager_logout" class="com.cl.action.ManagerAction"
+			method="logout">
+			<result>/WEB-INF/content/index.jsp</result>
+		</action>
+		<!-- 课程管理 -->
+		<action name="manager_courselist" class="com.cl.action.CourseAction"
+			method="getCourseList">
+			<result>/WEB-INF/content/manager/courselist.jsp</result>
+		</action>
+		<action name="manager_addcourse" class="com.cl.action.CourseAction"
+			method="addCourse">
+			<result type="redirect">manager_courselist.action</result>
+		</action>
+		<action name="manager_deletecourse" class="com.cl.action.CourseAction"
+			method="deleteCourse">
+			<result type="redirect">manager_courselist.action</result>
+		</action>
+		<!-- 学生管理 -->
+		<action name="manager_studentlist" class="com.cl.action.StudentAction"
+			method="getStudentList">
+			<result>/WEB-INF/content/manager/studentlist.jsp</result>
+		</action>
+		<action name="manager_deletestudent" class="com.cl.action.StudentAction"
+			method="deleteStudent">
+			<result type="redirect">manager_studentlist.action</result>
+		</action>
+		<action name="manager_addstudent" class="com.cl.action.StudentAction"
+			method="addStudent">
+			<result type="redirect">manager_studentlist.action</result>
+		</action>
+		<!-- 教师管理 -->
+		<action name="manager_teacherlist" class="com.cl.action.TeacherAction"
+			method="getTeacherList">
+			<result>/WEB-INF/content/manager/teacherlist.jsp</result>
+		</action>
+		<action name="manager_deleteteacher" class="com.cl.action.TeacherAction"
+			method="deleteTeacher">
+			<result type="redirect">manager_teacherlist.action</result>
+		</action>
+		<action name="manager_addteacher" class="com.cl.action.TeacherAction"
+			method="addTeacher">
+			<result type="redirect">manager_teacherlist.action</result>
+		</action>
+		<!-- 日志管理 -->
+		<action name="manager_loglist" class="com.cl.action.LogAction"
+			method="getLogList">
+			<result>/WEB-INF/content/manager/loglist.jsp</result>
+		</action>
+		<action name="manager_deletelog" class="com.cl.action.LogAction"
+			method="deleteLog">
+			<result type="redirectAction">
+				<param name="actionName">manager_loglist.action</param>
+			</result>
+		</action>
+		<!-- 教师分配课程 -->
+		<action name="manager_getassignteacher" class="com.cl.action.CourseUserAction"
+			method="getCourseTeacher">
+			<result>/WEB-INF/content/manager/courseteacher.jsp</result>
+		</action>
+		<action name="manager_updatecourseclasscapacity" class="com.cl.action.CourseUserAction"
+			method="updateCourseClassCapacity">
+			<result type="redirectAction">
+				<param name="actionName">manager_getassignteacher.action</param>
+			</result>
+		</action>
+		<action name="manager_*">
+			<result>/WEB-INF/content/manager/{1}.jsp</result>
+		</action>
+	</package>
+</struts>
