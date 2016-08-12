@@ -30,8 +30,8 @@ public class ScoreAction extends ActionSupport {
 		ArrayList<String> columns = new ArrayList<>();
 		for (int i = 0; i < SectionColumns.length; i++)
 			columns.add(SectionColumns[i]);
-		SectionCalc sectioncalc = new SectionCalc(section_id, -1);
-		ArrayList<SectionScore> res = sectioncalc.getAl();
+		SectionCalc sectioncalc = new SectionCalc(section_id);
+		ArrayList<SectionScore> res = sectioncalc.getSource();
 		String section_name = Section.getSectionBySectionId(section_id).getSection_name();
 		
 		for (int i = 0; i < res.size(); i++) {
@@ -72,8 +72,8 @@ public class ScoreAction extends ActionSupport {
 			homework_id = ((Integer)act.getSession().get("homework_id")).intValue();
 		int section_id = (new Integer(ServletActionContext.getRequest().getParameter("section_id"))).intValue();
 		ArrayList<SectionScore> sectionscore = getSectionscore();
-		SectionCalc sectioncalc = new SectionCalc(section_id, -1);
-		ArrayList<SectionScore> res = sectioncalc.getAl();
+		SectionCalc sectioncalc = new SectionCalc(section_id);
+		ArrayList<SectionScore> res = sectioncalc.getSource();
 		sectionscore.sort(new Comparator<SectionScore>() {
 			public int compare(SectionScore a, SectionScore b) {
 				return a.getStudent_id() - b.getStudent_id();

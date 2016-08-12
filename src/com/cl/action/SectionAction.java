@@ -89,8 +89,8 @@ public class SectionAction extends ActionSupport {
 			ArrayList<String> columns = new ArrayList<>();
 			for (int i = 0; i < SectionColumns.length; i++)
 				columns.add(SectionColumns[i]);
-			SectionCalc sectioncalc = new SectionCalc(section_id, -1);
-			ArrayList<SectionScore> res = sectioncalc.getAl();
+			SectionCalc sectioncalc = new SectionCalc(section_id);
+			ArrayList<SectionScore> res = sectioncalc.getSource();
 			for (int i = 0; i < res.size(); i++) {
 				res.get(i).setListening(new BigDecimal(res.get(i).getListening()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				res.get(i).setAnswer(new BigDecimal(res.get(i).getAnswer()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -103,7 +103,9 @@ public class SectionAction extends ActionSupport {
 			
 			act.put("sectioncolumns", columns);
 			act.put("scorearray", res);
-			act.put("average", new BigDecimal(sectioncalc.getAverage()));
+			act.put("average", new BigDecimal(sectioncalc.getAverage()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			act.put("max", new BigDecimal(sectioncalc.getMax()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			act.put("min", new BigDecimal(sectioncalc.getMax()).setScale(2, BigDecimal.ROUND_HALF_UP));
 			act.put("maxscore", sectioncalc.getMaxScore());
 			act.put("minscore", sectioncalc.getMinScore());
 			act.put("higher", sectioncalc.getHigher());
@@ -113,14 +115,14 @@ public class SectionAction extends ActionSupport {
 		else {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 			CourseCalc coursecalc = new CourseCalc(course_id);
-			ArrayList<Section> section = Section.getSectionList(course_id);
+			ArrayList<Section> section = Section.getSectionListByCourseId(course_id);
 			ArrayList<String> columns = new ArrayList<>();
 			columns.add("学号");
 			columns.add("姓名");
 			for (int i = 0; i < section.size(); i++)
 				columns.add(section.get(i).getSection_name());
 			columns.add("总评");
-			ArrayList<CourseScore> res = coursecalc.getAl();
+			ArrayList<CourseScore> res = coursecalc.getSource();
 			for (int i = 0; i < res.size(); i++) {
 				for (int j = 0; j < res.get(i).getSectionscore().size(); j++) {
 					res.get(i).getSectionscore().get(j).setSum(new BigDecimal(res.get(i).getSectionscore().get(j).getSum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -129,7 +131,9 @@ public class SectionAction extends ActionSupport {
 			
 			act.put("sectioncolumns", columns);
 			act.put("scorearray", res);
-			act.put("average", new BigDecimal(coursecalc.getAverage()));
+			act.put("average", new BigDecimal(coursecalc.getAverage()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			act.put("max", new BigDecimal(coursecalc.getMax()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			act.put("min", new BigDecimal(coursecalc.getMax()).setScale(2, BigDecimal.ROUND_HALF_UP));
 			act.put("maxscore", coursecalc.getMaxScore());
 			act.put("minscore", coursecalc.getMinScore());
 			act.put("higher", coursecalc.getHigher());

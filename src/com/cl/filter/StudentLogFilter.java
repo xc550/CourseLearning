@@ -47,7 +47,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 		
 //		get student
 		if (loginname != "") {
-			Student stu = Student.getStudentByLoginName(loginname);
+			Student stu = Student.getStudentByLoginname(loginname);
 			log.setUser_id(stu.getId());
 			log.setUser_name(stu.getName());
 			log.setUser_gender(stu.getGender());
@@ -84,12 +84,12 @@ public class StudentLogFilter extends LogFilter implements Filter {
 		log.setEvent_id(event_id);
 		
 		if (course_id != INVAILD)
-			log.setCourse_name(Course.getCourse(course_id).getCourse_name());
+			log.setCourse_name(Course.getCourseByCourseId(course_id).getCourse_name());
 		else
 			log.setCourse_name("");
 		if (section_id != INVAILD) {
 			if (section_id != 0)
-				log.setSection_name(Section.getSection(section_id).getSection_name());
+				log.setSection_name(Section.getSectionBySectionId(section_id).getSection_name());
 			else
 				log.setSection_name("课程总结");
 		}
@@ -97,7 +97,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 			log.setSection_name("");
 		}
 		if (event_id != INVAILD) {
-			Event eve = Event.getEvent(event_id);
+			Event eve = Event.getEventByEventId(event_id);
 			log.setEvent_name(eve.getEvent_content());
 			log.setEvent_type(eve.getEvent_type());
 		}
