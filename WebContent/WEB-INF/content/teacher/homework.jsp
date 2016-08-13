@@ -33,7 +33,7 @@
 							if (hw.getSection_id() != section_id) {
 								section_id = hw.getSection_id();
 					%>
-						<h4>章节：<%=Section.getSection(section_id).getSection_name() %></h4>
+						<h4>章节：<%=Section.getSectionBySectionId(section_id).getSection_name() %></h4>
 					<% } %>
 						<div class="panel-group" id="homework<%=hw.getHomework_id() %>" role="tablist" aria-multiselectable="true">
 							<div class="panel panel-default">

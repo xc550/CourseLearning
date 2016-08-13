@@ -1,3 +1,4 @@
+<%@page import="com.cl.dao.Section"%>
 <%@page import="com.cl.dao.HomeworkStudent"%>
 <%@page import="com.cl.dao.Student"%>
 <%@page import="com.cl.util.DateFormator"%>
@@ -34,7 +35,7 @@
 						if (hw.getSection_id() != section_id) {
 							section_id = hw.getSection_id();
 					%>
-							<h4>章节：<%=Section.getSection(section_id).getSection_name() %></h4>
+							<h4>章节：<%=Section.getSectionBySectionId(section_id).getSection_name() %></h4>
 					<% } %>
 					<div class="panel-group" id="homeworkstudent<%=hw.getHomework_id() %>" role="tablist" aria-multiselectable="true">
 						<div class="panel panel-default">
@@ -48,7 +49,7 @@
 									开始时间:<%=DateFormator.getDateCalendarToString(hw.getHomework_starttime()) %>
 									结束时间:<%=DateFormator.getDateCalendarToString(hw.getHomework_endtime()) %>
 									<%
-										HomeworkStudent hws = HomeworkStudent.getHomeworkStudentByStudentId(hw.getHomework_id(), student_id);
+										HomeworkStudent hws = HomeworkStudent.getHomeworkStudentByHomeworkIdAndStudentId(hw.getHomework_id(), student_id);
 										if (hws != null) {
 									%>
 										已提交

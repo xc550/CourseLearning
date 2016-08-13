@@ -57,8 +57,10 @@ public class SectionAction extends ActionSupport {
 			class_id = CourseTeacher.getCourseTeacherByCourseIdAndTeacherId(course_id, user_id).getClass_id();
 		}
 		ArrayList<Section> res = Section.getSectionListByCourseId(course_id);
+		String course_name = Course.getCourseByCourseId(course_id).getCourse_name();
 		
 		act.put("sectionlist", res);
+		act.put("course_name", course_name);
 		act.getSession().put("class_id", class_id);
 		act.getSession().put("course_id", course_id);
 		act.getSession().remove("section_id");

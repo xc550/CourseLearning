@@ -44,7 +44,7 @@
 								ArrayList<SectionScore> scorearray = (ArrayList<SectionScore>)request.getAttribute("scorearray");
 								for (int i = 0; i < scorearray.size(); i++) {
 									SectionScore sectionscore = scorearray.get(i);
-									Student student = Student.getStudentById(sectionscore.getStudent_id());
+									Student student = Student.getStudentByStudentId(sectionscore.getStudent_id());
 									double listening = sectionscore.getListening();
 									double answer = sectionscore.getAnswer();
 									double attendance = sectionscore.getAttendance();
@@ -70,7 +70,7 @@
 								ArrayList<CourseScore> scorearray = (ArrayList<CourseScore>)request.getAttribute("scorearray");
 								for (int i = 0; i < scorearray.size(); i++) {
 									ArrayList<SectionScore> studentscore = scorearray.get(i).getSectionscore();
-									Student student = Student.getStudentById(scorearray.get(i).getStudent_id());
+									Student student = Student.getStudentByStudentId(scorearray.get(i).getStudent_id());
 									double sum = new BigDecimal(scorearray.get(i).getAverage()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 						%>
 							<tr>
@@ -168,8 +168,8 @@
 						<p>
 						<%
 							for (int i = 0; i < lower.size(); i += 2) { 
-								String student_name = Student.getStudentById(lower.get(i).intValue()).getName();
-								String prob_name = Section.getSection(lower.get(i + 1).intValue()).getSection_name();
+								String student_name = Student.getStudentByStudentId(lower.get(i).intValue()).getName();
+								String prob_name = Section.getSectionBySectionId(lower.get(i + 1).intValue()).getSection_name();
 						%>
 							<p><%=student_name %>: <%=prob_name %></p>
 						<% } %>
@@ -178,7 +178,7 @@
 						<p>
 						<%
 							for (int i = 0; i < cheating.size(); i += 2) {
-								String student_name = Student.getStudentById(cheating.get(i).intValue()).getName();
+								String student_name = Student.getStudentByStudentId(cheating.get(i).intValue()).getName();
 								int times = cheating.get(i + 1).intValue();
 						%>
 							<p><%=student_name %>: <%=times %>次</p>

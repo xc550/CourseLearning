@@ -59,7 +59,7 @@
 							<%
 								for (int i = 0; i < list.size(); i++) {
 									HomeworkStudent hws = list.get(i);
-									Student stu = Student.getStudentById(hws.getStudent_id());
+									Student stu = Student.getStudentByStudentId(hws.getStudent_id());
 							%>
 							<tr>
 								<td><input name="sectionscore[<%=i %>].student_id" value="<%=stu.getId()%>" 
@@ -72,7 +72,7 @@
 									</a>
 								</td>
 								<%
-									double score = new BigDecimal(SectionScore.getHomeworkScoreByStudentId(hw.getSection_id(), stu.getId())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+									double score = new BigDecimal(SectionScore.getHomeworkScoreByStudentIdAndSectionId(hw.getSection_id(), stu.getId())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 									if (score == -1.0) {
 								%>
 									<td><input name="sectionscore[<%=i %>].homework" min="0" max="100" step="0.5"></td>

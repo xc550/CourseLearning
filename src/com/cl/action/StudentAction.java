@@ -22,6 +22,7 @@ public class StudentAction extends ActionSupport {
 	
 	public String login() throws Exception {
 		ActionContext act = ActionContext.getContext();
+		System.out.println(student.getLoginname() + " " + student.getPassword());
 		if (Student.check(this.getStudent().getLoginname(), this.getStudent().getPassword())) {
 			String username = this.getStudent().getLoginname();
 			

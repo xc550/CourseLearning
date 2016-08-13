@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import com.cl.dao.CourseScore;
+import com.cl.dao.Section;
 import com.cl.dao.SectionScore;
 import com.cl.dao.Student;
 
@@ -105,23 +106,13 @@ public class CourseCalc {
 		return res;
 	}
 	
-	public ArrayList<Student> suspectCheating() {
-		BigDecimal avg = new BigDecimal(getAverage());
-		BigDecimal std = new BigDecimal(stdscore);
-		ArrayList<Student> res = new ArrayList<>();
-		for (int i = 0; i < source.size(); i++) {
-			BigDecimal score = new BigDecimal(source.get(i).getSum());
-			BigDecimal homework = new BigDecimal(source.get(i).getHomework());
-			BigDecimal experiment = new BigDecimal(source.get(i).getExperiment());
-			if (score.equals(avg.max(score)) 
-					&& (homework.equals(std.max(homework)) || experiment.equals(std.max(experiment)))) {
-				res.add(Student.getStudentByStudentId(source.get(i).getStudent_id()));
-			}
-		}
+	public ArrayList<Integer> suspectCheating() {
+		ArrayList<Integer> res = new ArrayList<>();
 		return res;
 	}
 	
-	public ArrayList<Student> getCorePrblem() {
-		
+	public ArrayList<Section> getCorePrblem() {
+		ArrayList<Section> res = new ArrayList<>();
+		return res;
 	}
 }

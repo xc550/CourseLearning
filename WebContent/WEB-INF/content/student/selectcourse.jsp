@@ -41,7 +41,7 @@
 							<%
 								for (int j = 0; j < classes.size(); j++) {
 									int class_id = classes.get(j).getClass_id();
-									Teacher te = Teacher.getTeacherById(classes.get(j).getId());
+									Teacher te = Teacher.getTeacherByTeacherId(classes.get(j).getId());
 							%>
 							<a href="student_selectcourse?course_id=<%=course_id%>&class_id=<%=class_id%>">
 								<button class="btn btn-primary btn-sm"><%=te.getName() %></button>

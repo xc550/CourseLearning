@@ -113,9 +113,9 @@
 							Student stu = null;
 							Teacher te = null;
 							if (b.getStudent_id() != -1)
-								stu = Student.getStudentById(b.getStudent_id());
+								stu = Student.getStudentByStudentId(b.getStudent_id());
 							if (b.getTeacher_id() != -1)
-								te = Teacher.getTeacherById(b.getTeacher_id());
+								te = Teacher.getTeacherByTeacherId(b.getTeacher_id());
 					%>
 					<div class="row">
 						<table class="table">
@@ -156,15 +156,15 @@
 										<div class="row">
 											<%
 												if (b.getReply_id() != -1) {
-													BBS t = BBS.getBBS(b.getReply_id());
+													BBS t = BBS.getBBSByBBSId(b.getReply_id());
 											%>
 												<blockquote>
 													<p>
 													<u>
 													<% if (t.getStudent_id() != -1) { %>
-														<%=Student.getStudentById(t.getStudent_id()).getName() %>
+														<%=Student.getStudentByStudentId(t.getStudent_id()).getName() %>
 													<% } else if (t.getTeacher_id() != -1) { %>
-														<%=Teacher.getTeacherById(t.getTeacher_id()).getName() %>
+														<%=Teacher.getTeacherByTeacherId(t.getTeacher_id()).getName() %>
 													<% } %>
 													发表于
 													<%=DateFormator.getDateCalendarToString(t.getBbs_date()) %>

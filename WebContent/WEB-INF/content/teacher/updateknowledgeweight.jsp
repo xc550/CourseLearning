@@ -1,4 +1,3 @@
-<%@page import="com.cl.dao.SectionWeight"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.cl.dao.KnowledgeWeight"%>
 <%@page import="java.util.ArrayList"%>

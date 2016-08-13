@@ -16,8 +16,7 @@
 			<div class="col-md-3">
 				<%
 					ArrayList<Section> res = (ArrayList<Section>)request.getAttribute("sectionlist");
-					int course_id = ((Integer)request.getSession().getAttribute("course_id")).intValue();
-					String course_name = Course.getCourse(course_id).getCourse_name();
+					String course_name = (String)request.getAttribute("course_name");
 				%>
 				<table class="table">
 					<thead>

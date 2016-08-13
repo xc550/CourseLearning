@@ -26,6 +26,7 @@ public class TeacherAction extends ActionSupport {
 	}
 
 	public String login() throws Exception {
+		
 		if (Teacher.check(this.getTeacher().getLoginname(), this.getTeacher().getPassword())) {
 			String username = this.getTeacher().getLoginname();
 			ActionContext act = ActionContext.getContext();

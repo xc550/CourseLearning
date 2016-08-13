@@ -1,4 +1,3 @@
-<%@page import="com.cl.dao.SectionWeight"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.cl.dao.KnowledgeWeight"%>
 <%@page import="java.util.ArrayList"%>
@@ -30,7 +29,7 @@
 						<table class="table">
 							<%
 								ArrayList<String> columns = (ArrayList<String>) request.getAttribute("columns");
-								ArrayList<SectionWeight> res = (ArrayList<SectionWeight>)request.getSession().getAttribute("weightlist");
+								ArrayList<Section> res = (ArrayList<Section>)request.getSession().getAttribute("weightlist");
 								int row = (res.size() % 4 == 0 ? res.size() / 4 : res.size() / 4 + 1);
 								for (int i = 0; i < row * 2; i++) {
 							%>

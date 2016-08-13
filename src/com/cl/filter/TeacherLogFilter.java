@@ -129,7 +129,7 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 				log.setAction(actioninchinese);
 			
 			if (show) {
-				log.show();
+//				log.show();
 				String path = hreq.getServletContext().getRealPath(savepath);
 //				System.out.println("path: " + path);
 				if (!FileFunc.directoryExist(path))

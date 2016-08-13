@@ -44,7 +44,7 @@
 							<% 
 								for (int i = 0; i < scorearray.size(); i++) {
 									SectionScore sectionscore = scorearray.get(i);
-									Student student = Student.getStudentById(sectionscore.getStudent_id());
+									Student student = Student.getStudentByStudentId(sectionscore.getStudent_id());
 									double listening = new BigDecimal(sectionscore.getListening()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 									double answer = new BigDecimal(sectionscore.getAnswer()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 									double attendance = new BigDecimal(sectionscore.getAttendance()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();

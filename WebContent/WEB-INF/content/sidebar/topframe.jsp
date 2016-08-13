@@ -13,18 +13,16 @@
 <link rel="stylesheet" href="public/css/main.css">
 </head>
 <body>
-	<%
-		String username = (String)request.getSession().getAttribute("username");	
+	<%	
 		String role = (String)request.getSession().getAttribute("role");
+		String loginname = (String)request.getSession().getAttribute("username");
 		User user = null;
 		if (role.equals("student"))
-			user = Student.getStudentByLoginName(username);
+			user = Student.getStudentByLoginname(loginname);
 		else if (role.equals("teacher"))
-			user = Teacher.getTeacherByLoginName(username);
+			user = Teacher.getTeacherByLoginname(loginname);
 		else if (role.equals("manager"))
-			user = Manager.getManagerByLoginName(username);
-		else
-			user = null;
+			user = Manager.getManagerByLoginname(loginname);
 	%>
 	<nav class="navbar navbar-defaultp">
 	  <div class="container-fluid">

@@ -121,7 +121,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 		
 		if (p.matcher(action).matches() && (role == null || role.equals("student"))) {
 			String subaction = getSubAction(action);
-			System.out.println("##########Start##########");
+//			System.out.println("##########Start##########");
 			System.out.println("action: " + action + " subaction: " + subaction);
 			
 			String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -137,14 +137,14 @@ public class StudentLogFilter extends LogFilter implements Filter {
 				log.setAction(actioninchinese);
 			
 			if (show) {
-				log.show();
+//				log.show();
 				String path = hreq.getServletContext().getRealPath(savepath);
 //				System.out.println("path: " + path);
 				if (!FileFunc.directoryExist(path))
 					FileFunc.createDirectory(path);
 //				Log.saveLog(path, log);
 			}
-			System.out.println("##########End##########\n");
+//			System.out.println("##########End##########\n");
 		}
 	}
 }

@@ -50,7 +50,7 @@
 											<select name="courseteacher[<%=i - 1 %>].id">
 											<%
 												if (j < ct.size() && ct.get(j).getClass_id() == i) {
-													Teacher te = Teacher.getTeacherById(ct.get(j).getId());
+													Teacher te = Teacher.getTeacherByTeacherId(ct.get(j).getId());
 											%>
 												<option value="<%=te.getId()%>"><%=te.getName() %></option>
 											<%
