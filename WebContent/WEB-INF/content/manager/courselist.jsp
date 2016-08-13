@@ -10,16 +10,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CourseList</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
 			<div class="col-md-3">
-				<s:action name="sidebar_man_courselist" executeResult="true"></s:action>
+				<s:action name="sidebar_man_functionlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 				<%
@@ -41,7 +40,7 @@
 									<p>课堂容量：<%=courselist.get(i).getCourse_classcapacity() %></p>
 								</div>
 								<div class="col-md-2 col-md-offset-1">
-									<a href="manager_assignteacher?course_id=<%=courselist.get(i).getCourse_id() %>">
+									<a href="manager_getassignteacher?course_id=<%=courselist.get(i).getCourse_id() %>">
 										<button class="btn btn-sm btn-info">分配教师</button>
 									</a>
 								</div>
@@ -64,7 +63,7 @@
 						</div>
 						<div class="form-group">
 							<label class="sr-only" for="inputCourseCapacity">课程容量</label>
-							<input type="number" min="0" style="width: 150px" name="course.course_capacity" class="form-control" id="inputCourseCapacity" placeholder="课程容量">
+							<input type="number" min="0" style="width: 150px" name="course.course_classcapacity" class="form-control" id="inputCourseCapacity" placeholder="课程容量">
 						</div>
 						<button type="submit" class="btn btn-default">提交</button>
 					</form>

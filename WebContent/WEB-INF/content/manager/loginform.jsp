@@ -12,6 +12,7 @@
 		<div class="row">
 			<div class="col-md-5 col-md-offset-4">
 				<h2>管理员登录</h2><a href="main_loginform">返回</a>
+				<hr>
 				<form class="form-horizontal" action="manager_login" method="post">
 					<div class="form-group">
 						<label for="inputManagerLoginname" class="col-md-2 control-label">学号</label>

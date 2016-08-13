@@ -71,7 +71,7 @@ public class Section {
 		ResultSet rs = DBHelper.execQuery(con, sql);
 		ArrayList<Section> res = new ArrayList<>();
 		try {
-			if (rs.next()) {
+			while (rs.next()) {
 				Section section = getInstance();
 				int section_id = rs.getInt("section_id");
 				String section_name = rs.getString("section_name");
@@ -109,6 +109,10 @@ public class Section {
 	}
 	
 	public static void deleteSectionBySectionId(int section_id) {
+		SectionScore.deleteSectionScoreBySectionId(section_id);
+		KnowledgeWeight.deleteKnowledgeWeightBySectionId(section_id);
+		Event.deleteEventBySectionId(section_id);
+		
 		String sql = "delete from section where section_id=" + section_id + ";";
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);
@@ -116,8 +120,20 @@ public class Section {
 	}
 	
 	public static void deleteSectionByCourseId(int course_id) {
-		String sql = "delete from section where course_id=" + course_id + ";";
+		String sql = "select distinct section_id from section where course_id=" + course_id + ";";
 		Connection con = DBHelper.getConnection();
+		ResultSet rs = DBHelper.execQuery(con, sql);
+		try {
+			while (rs.next()) {
+				int section_id = rs.getInt("section_id");
+				SectionScore.deleteSectionScoreBySectionId(section_id);
+				KnowledgeWeight.deleteKnowledgeWeightBySectionId(section_id);
+				Event.deleteEventBySectionId(section_id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sql = "delete from section where course_id=" + course_id + ";";
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}

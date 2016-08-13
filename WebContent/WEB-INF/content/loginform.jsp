@@ -9,6 +9,9 @@
 </head>
 <body>
 	<div class="container">
+		<div class="page-header">
+			<h1>学习分析管理系统 <small>V2.0</small></h1>
+		</div>
 		<div class="row">
 			<div class="col-md-3 col-md-offset-1">
 				<a href="student_loginform">

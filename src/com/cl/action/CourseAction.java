@@ -103,8 +103,7 @@ public class CourseAction extends ActionSupport {
 			CourseStudent.addCourseStudent(course_id, class_id, user_id);
 		}
 		else if (role.equals("teacher")) {
-			user_id = Teacher.getTeacherByLoginname(loginname).getId();
-			CourseTeacher.addCourseTeacher(course_id, class_id, user_id);
+			
 		}
 		else {
 //			wrong role
@@ -122,8 +121,7 @@ public class CourseAction extends ActionSupport {
 			CourseStudent.deleteCourseStudentByCourseIdAndStudentId(course_id, user_id);
 		}
 		else if (role.equals("teacher")) {
-			user_id = Teacher.getTeacherByLoginname(loginname).getId();
-			CourseTeacher.deleteCourseTeacherOne(course_id, user_id);
+			
 		}
 		else {
 //			wrong role

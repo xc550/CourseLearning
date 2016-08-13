@@ -80,9 +80,10 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 		else
 			log.setCourse_name("");
 		if (section_id != INVAILD) {
-			if (section_id != 0)
-				log.setSection_name(Section.getSectionBySectionId(section_id).getSection_name());
-			else
+//			教师删除时顺序出错
+//			if (section_id != 0)
+//				log.setSection_name(Section.getSectionBySectionId(section_id).getSection_name());
+//			else
 				log.setSection_name("课程总结");
 		}
 		else {
@@ -109,7 +110,7 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 		String[] r = hreq.getRequestURI().split("/");
 		String action = r[r.length - 1];
 		String role = (String)hreq.getSession().getAttribute("role");
-		Pattern p = Pattern.compile("^(teacher|main)_(.)*");
+		Pattern p = Pattern.compile("^(teacher)_(.)*");
 		
 		if (p.matcher(action).matches() && (role == null || role.equals("teacher"))) {
 			String subaction = getSubAction(action);
@@ -129,7 +130,7 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 				log.setAction(actioninchinese);
 			
 			if (show) {
-//				log.show();
+				log.show();
 				String path = hreq.getServletContext().getRealPath(savepath);
 //				System.out.println("path: " + path);
 				if (!FileFunc.directoryExist(path))

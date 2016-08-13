@@ -8,14 +8,14 @@
 <title>Welcome</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
 			<div class="col-md-3">
-				<s:action name="sidebar_stu_courselist" executeResult="true"></s:action>
+				<s:action name="sidebar_tea_courselist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 				<p>请点击左侧课程查看详细信息！</p>

@@ -78,6 +78,7 @@ public class SectionAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 		Section sec = getSection();
+		System.out.println(sec.getSection_name());
 		sec.setCourse_id(course_id);
 		sec.setSection_weight(0);
 		Section.addSection(sec);

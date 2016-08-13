@@ -9,16 +9,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>StudentList</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
 			<div class="col-md-3">
-				<s:action name="sidebar_man_courselist" executeResult="true"></s:action>
+				<s:action name="sidebar_man_functionlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 				<div class="row">

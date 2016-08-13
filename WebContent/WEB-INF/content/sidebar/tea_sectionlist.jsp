@@ -49,7 +49,7 @@
 					<tbody>
 						<tr><td align="center"><a href="teacher_managehomework">作业管理</a></td></tr>
 						<tr><td align="center"><a href="teacher_managesection">章节管理</a></td></tr>
-						<tr><td align="center"><a href="teacher_manageweight?section_id=0">更新权值</a></td></tr>
+						<tr><td align="center"><a href="teacher_managesectionweight?section_id=0">更新权值</a></td></tr>
 					</tbody>
 				</table>
 			</div>

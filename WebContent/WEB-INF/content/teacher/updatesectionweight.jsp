@@ -11,9 +11,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>UpdateWeight</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
@@ -25,7 +24,7 @@
 			<div class="col-md-8 col-md-offset-1">
 				<div class="row">
 					<!-- 前端需要传到后台之前的数组中课程号和章节号 -->
-					<form action="teacher_updateweight?section_id=0" method="post">
+					<form action="teacher_updatesectionweight?section_id=0" method="post">
 						<table class="table">
 							<%
 								ArrayList<String> columns = (ArrayList<String>) request.getAttribute("columns");
@@ -47,7 +46,7 @@
 							<%
 										} else {
 							%>
-									<td><input name="sectionweight[<%=ind %>].section_weight" value="<%=val %>" type="number" min=0 max=1 step=0.01></td> 
+									<td><input name="section[<%=ind %>].section_weight" value="<%=val %>" type="number" min=0 max=1 step=0.01></td> 
 							<%
 										}
 									}

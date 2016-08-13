@@ -19,7 +19,7 @@ public class ViewChartAction extends ActionSupport {
 	public JFreeChart getChart() {
 		ActionContext act = ActionContext.getContext();
 		String piename = ServletActionContext.getRequest().getParameter("pilename");
-		ArrayList<LearningStatus> ls = (ArrayList<LearningStatus>)act.get("learningstatus");
+		ArrayList<LearningStatus> ls = (ArrayList<LearningStatus>)act.getSession().get("learningstatus");
 		Pie pie = LearningStatus.getPieByPieName(piename, ls);
 		if (pie != null) {
 			chart = ChartFactory.createPieChart(pie.getPiename(), getDataSet(pie), true, true, false);

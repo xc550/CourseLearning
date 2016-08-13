@@ -25,7 +25,7 @@ public class PageManager {
 	}
 	
 	public int getTotalcolumn() {
-		return (totalsize % each == 0 ? totalsize / each : totalsize / each + 1);
+		return totalcolumn;
 	}
 	
 	public int getNextcolumn() {
@@ -45,6 +45,7 @@ public class PageManager {
 	}
 	
 	public void calcPreColumnAndNextColumn() {
+		totalcolumn = (totalsize % each == 0 ? totalsize / each : totalsize / each + 1);
 		precolumn = nowcolumn - 2;
 		nextcolumn = nowcolumn + 2;
 		while (precolumn < 1) {

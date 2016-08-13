@@ -47,7 +47,6 @@
 						<tr><td align="center">功能列表</td></tr>
 					</thead>
 					<tbody>
-						<tr><td align="center"><a href="student_getsectionsummary">查看个人成绩</a></td></tr>
 						<tr><td align="center"><a href="student_gethomework">查看作业</a></td></tr>
 					</tbody>
 				</table>

@@ -78,10 +78,10 @@ public class CourseTeacher extends CourseHead {
 		return res;
 	}
 	
-	public static void addCourseTeacher(int course_id, int class_id, int user_id) {
+	public static void addCourseTeacher(CourseHead u) {
 		Connection con = DBHelper.getConnection();
 		String sql = "insert into courseteacher(course_id, teacher_id, class_id) "
-				+ "values(" + course_id + ", " + user_id + ", " + class_id + ");";
+				+ "values(" + u.getCourse_id() + ", " + u.getId() + ", " + u.getClass_id() + ");";
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}
@@ -100,10 +100,39 @@ public class CourseTeacher extends CourseHead {
     	DBHelper.closeConnection(con);	
 	}
 	
-	public static void deleteCourseTeacherOne(int course_id, int user_id) {
+	public static void deleteCourseTeacherByCourseIdAndTeacherId(int course_id, int teacher_id) {
 		Connection con = DBHelper.getConnection();
-		String sql = "delete from courseteacher where course_id=" + course_id + " and teacher_id=" + user_id + ";";
+		String sql = "delete from courseteacher where course_id=" + course_id + " and teacher_id=" + teacher_id + ";";
 		DBHelper.execUpdate(con, sql);
-    	DBHelper.closeConnection(con);	
+    	DBHelper.closeConnection(con);
+	}
+	
+	public static void deleteCourseTeacherByCourseIdAndClassId(int course_id, int class_id) {
+		Connection con = DBHelper.getConnection();
+		String sql = "delete from courseteacher where course_id=" + course_id + " and class_id=" + class_id + ";";
+		DBHelper.execUpdate(con, sql);
+    	DBHelper.closeConnection(con);
+	}
+	
+	public static boolean existCourseTeacherByCourseIdAndClassId(CourseHead ct) {
+		Connection con = DBHelper.getConnection();
+		boolean exist = false;
+		String sql = "select * from courseteacher where course_id=" + ct.getCourse_id() + " and class_id=" + ct.getClass_id() + ";";
+		ResultSet rs = DBHelper.execQuery(con, sql);
+		try {
+			if (rs.next())
+				exist = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	DBHelper.closeConnection(con);
+    	return exist;
+	}
+	
+	public static void updateCourseTeacherByCourseIdAndClassId(CourseHead ct) {
+		Connection con = DBHelper.getConnection();
+		String sql = "update courseteacher set teacher_id=" + ct.getId() + " where course_id=" + ct.getCourse_id() + " and class_id=" + ct.getClass_id() + ";";
+		DBHelper.execUpdate(con, sql);
+    	DBHelper.closeConnection(con);
 	}
 }

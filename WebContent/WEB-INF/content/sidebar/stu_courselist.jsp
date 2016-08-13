@@ -43,7 +43,7 @@
 						<tr><td align="center">功能列表</td></tr>
 					</thead>
 					<tbody>
-						<tr><td align="center"><a href="stu_getcourseselection">选课</a></td></tr>
+						<tr><td align="center"><a href="student_getcourseselection">选课</a></td></tr>
 					</tbody>
 				</table>
 			</div>

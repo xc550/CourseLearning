@@ -13,7 +13,7 @@
 <title>SelectCourse</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>

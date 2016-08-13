@@ -56,7 +56,7 @@
 					<tbody>
 						<tr><td align="center"><a href="teacher_manageevent">事件管理</a></td></tr>
 						<% if (section_id != 0) { %>
-						<tr><td align="center"><a href="teacher_manageweight">更新权值</a></td></tr>
+						<tr><td align="center"><a href="teacher_manageknowledgeweight">更新权值</a></td></tr>
 						<tr><td align="center"><a href="teacher_getscore">评分</a></td></tr>
 						<% } %>
 						<tr><td align="center"><a href="teacher_getsectionsummary">查看总结报告</a></td></tr>

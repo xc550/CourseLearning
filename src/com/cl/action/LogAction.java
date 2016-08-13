@@ -42,7 +42,7 @@ public class LogAction extends ActionSupport {
 		pm.setNowcolumn(nowcolumn);
 		pm.calcPreColumnAndNextColumn();
 		
-		act.put("loglist", res);
+		act.put("studentloglist", res);
 		act.put("each", pm.getEach());
 		act.put("nowcolumn", pm.getNowcolumn());
 		act.put("totalcolumn", pm.getTotalcolumn());

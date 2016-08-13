@@ -11,20 +11,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>AddEvent</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
 			<div class="col-md-3">
-				<s:action name="sidebar_tea_sectionlist" executeResult="true"></s:action>
+				<s:action name="sidebar_tea_eventlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 				<%
-					int section_id = ((Integer)request.getSession().getAttribute("section_id")).intValue();
+					int section_id = ((Integer)session.getAttribute("section_id")).intValue();
 					String section_name = ((String)request.getAttribute("section_name"));
 					ArrayList<Event> eventlist = (ArrayList<Event>)request.getAttribute("eventlist");
 					if (eventlist.size() != 0) {
@@ -81,8 +80,8 @@
 									<td><%=section_name %></td>
 									<td><input name="event.event_content" type="text"></td>
 									<td><input name="event.event_type" type="text"></td>
-									<td><input name="event.endtime" onclick="setday(this)" maxlength="60"></td>
-									<!-- <td><input type="datetime-local" name="event.endtime" maxlength="60"></td> -->
+									<!-- <td><input name="event.endtime" onclick="setday(this)" maxlength="60"></td> -->
+									<td><input type="datetime-local" name="event.endtime" maxlength="60"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -92,6 +91,5 @@
 			</div>
 		</div>
 	</div>
-	<script src="public/js/calendar.js"></script>
 </body>
 </html>

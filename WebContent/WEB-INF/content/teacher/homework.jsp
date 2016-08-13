@@ -10,10 +10,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Homework</title>
-<link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">  
+<link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">  
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
@@ -124,7 +123,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="public/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="public/bower_components/jquery/jquery.js"></script>
 	<script type="text/javascript" src="public/bower_components/bootstrap/js/collapse.js"></script>
 	<script src="public/js/calendar.js"></script>
 </body>

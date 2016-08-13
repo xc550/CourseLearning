@@ -321,11 +321,17 @@
 		</action>
 		<!-- 教师分配课程 -->
 		<action name="manager_getassignteacher" class="com.cl.action.CourseUserAction"
-			method="getCourseTeacher">
+			method="getCourseTeacherList">
 			<result>/WEB-INF/content/manager/courseteacher.jsp</result>
 		</action>
 		<action name="manager_updatecourseclasscapacity" class="com.cl.action.CourseUserAction"
 			method="updateCourseClassCapacity">
+			<result type="redirectAction">
+				<param name="actionName">manager_getassignteacher.action</param>
+			</result>
+		</action>
+		<action name="manager_updatecourseteacher" class="com.cl.action.CourseUserAction"
+			method="updateCourseTeacher">
 			<result type="redirectAction">
 				<param name="actionName">manager_getassignteacher.action</param>
 			</result>

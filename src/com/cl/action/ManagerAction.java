@@ -21,7 +21,7 @@ public class ManagerAction extends ActionSupport {
 			String username = this.getManager().getLoginname();
 			
 			act.getSession().put("username", username);
-			act.getSession().put("role", "student");
+			act.getSession().put("role", "manager");
 			return SUCCESS;
 		}
 		return ERROR;

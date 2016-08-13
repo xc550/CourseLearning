@@ -14,9 +14,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>EventInfo</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
@@ -100,7 +99,7 @@
 							</tbody>
 						</table>
 						<% if (ls == null) { %>
-						<button type="submit">提交</button>
+						<button class="btn btn-sm btn-success" type="submit">提交</button>
 						<% } %>
 					</form>
 				</div>
@@ -235,13 +234,12 @@
 	  </div>
 	</div>
 	
-	<script type="text/javascript" src="public/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="public/bower_components/jquery/jquery.js"></script>
 	<script type="text/javascript">
 	function changeModal(bbsid) {
 		document.getElementById("replyform").action="student_submitbbs?reply_id=" + bbsid;
 	}
 	</script>
-	<script type="text/javascript" src="public/js/main.js"></script>
 	<script type="text/javascript" src="public/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 </body>
 </html>

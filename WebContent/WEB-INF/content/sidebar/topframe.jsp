@@ -10,12 +10,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TopFrame</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="public/css/main.css">
 </head>
 <body>
 	<%	
-		String role = (String)request.getSession().getAttribute("role");
-		String loginname = (String)request.getSession().getAttribute("username");
+		String role = (String)session.getAttribute("role");
+		String loginname = (String)session.getAttribute("username");
 		User user = null;
 		if (role.equals("student"))
 			user = Student.getStudentByLoginname(loginname);
@@ -24,7 +23,7 @@
 		else if (role.equals("manager"))
 			user = Manager.getManagerByLoginname(loginname);
 	%>
-	<nav class="navbar navbar-defaultp">
+	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">

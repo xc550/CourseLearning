@@ -91,9 +91,10 @@ public class WeightAction extends ActionSupport {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 			ArrayList<Section> former = (ArrayList<Section>)act.getSession().get("weightlist");
 			ArrayList<Section> now = getSection();
-
+			
 			for (int i = 0; i < former.size(); i++) {
 				now.get(i).setSection_id(former.get(i).getSection_id());
+				now.get(i).setSection_name(former.get(i).getSection_name());
 				now.get(i).setCourse_id(course_id);
 				Section.updateSection(now.get(i));
 			}

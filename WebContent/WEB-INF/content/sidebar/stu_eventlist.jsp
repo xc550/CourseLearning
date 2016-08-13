@@ -49,8 +49,6 @@
 						%>
 					</tbody>
 				</table>
-			</div>
-			<div class="row">
 				<table class="table">
 					<thead>
 						<tr><td align="center">功能列表</td></tr>

@@ -8,14 +8,14 @@
 <title>Welcome</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
 </head>
-<body background="public/img/leftframe_content.gif">
+<body>
 	<div class="container">
 		<div class="row">
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
 			<div class="col-md-3">
-				<s:action name="sidebar_man_courselist" executeResult="true"></s:action>
+				<s:action name="sidebar_man_functionlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-9">
 				<p>管理员您好，左侧的功能可供使用</p>

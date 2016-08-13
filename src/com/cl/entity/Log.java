@@ -145,6 +145,7 @@ public class Log {
 	}
 	
 	public void show() {
+		System.out.println("LogId\tUserId\tUsername\tUsergender\tTime\tAction\tCourseId\tClassId\tCourseName\tSectionId\tSectionName\tEventId\tEventName");
 		System.out.println(this.getLog_id() + "\t" + this.getUser_id() + "\t" + this.getUser_name()
 					+ "\t" + this.getUser_gender() + "\t" + DateFormator.getDateCalendarToString(this.getTime())
 					+ "\t" + this.getAction() + "\t" + this.getCourse_id() + "\t" + this.getClass_id() 

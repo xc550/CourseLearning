@@ -117,7 +117,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 		String[] r = hreq.getRequestURI().split("/");
 		String action = r[r.length - 1];
 		String role = (String)hreq.getSession().getAttribute("role");
-		Pattern p = Pattern.compile("^(student|main)_(.)*");
+		Pattern p = Pattern.compile("^(student)_(.)*");
 		
 		if (p.matcher(action).matches() && (role == null || role.equals("student"))) {
 			String subaction = getSubAction(action);
@@ -137,7 +137,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 				log.setAction(actioninchinese);
 			
 			if (show) {
-//				log.show();
+				log.show();
 				String path = hreq.getServletContext().getRealPath(savepath);
 //				System.out.println("path: " + path);
 				if (!FileFunc.directoryExist(path))

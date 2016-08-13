@@ -162,9 +162,9 @@ public class Event {
     	DBHelper.closeConnection(con);
 	}
 	
-	public static void deleteEventBySectionId(int id) {
+	public static void deleteEventBySectionId(int section_id) {
 		Connection con = DBHelper.getConnection();
-		String sql = "select distinct event_id from event where section_id=" + id + ";";
+		String sql = "select distinct event_id from event where section_id=" + section_id + ";";
 		ResultSet rs = DBHelper.execQuery(con, sql);
 		try {
 			while (rs.next()) {
@@ -176,7 +176,7 @@ public class Event {
 			e.printStackTrace();
 		}
 		
-		sql = "delete from event where section_id=" + id + ";";
+		sql = "delete from event where section_id=" + section_id + ";";
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}
