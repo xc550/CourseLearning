@@ -158,6 +158,9 @@ public class HomeworkAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	/*
+	 * role: teacher
+	 */
 	public String updataHomeworkAccessory() throws Exception {
 		ActionContext act = ActionContext.getContext();
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();

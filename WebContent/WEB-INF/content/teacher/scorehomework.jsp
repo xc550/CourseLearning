@@ -67,7 +67,7 @@
 								<td><%=stu.getName() %></td>
 								<td><%=hws.getHomeworkstudent_comment() %></td>
 								<td><%=hws.getHomeworkstudent_accessory() %>
-									<a href="main_homeworkdownload?filename=<%=hws.getHomeworkstudent_accessory()%>">
+									<a href="main_homeworkdownload?filename=<%=hws.getStudent_id() %>_<%=hws.getHomeworkstudent_accessory()%>&homework_id=<%=hws.getHomework_id()%>">
 										<span class="glyphicon glyphicon-download"></span>
 									</a>
 								</td>

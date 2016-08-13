@@ -142,7 +142,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 //				System.out.println("path: " + path);
 				if (!FileFunc.directoryExist(path))
 					FileFunc.createDirectory(path);
-//				Log.saveLog(path, log);
+//				Log.saveLog(path, log, "student");
 			}
 //			System.out.println("##########End##########\n");
 		}

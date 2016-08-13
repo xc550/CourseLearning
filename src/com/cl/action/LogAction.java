@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.apache.struts2.ServletActionContext;
 
 import com.cl.dao.Student;
+import com.cl.dao.Teacher;
 import com.cl.entity.Log;
 import com.cl.util.PageManager;
 import com.opensymphony.xwork2.ActionContext;
@@ -16,7 +17,7 @@ public class LogAction extends ActionSupport {
 	
 	public String getLogList() throws Exception {
 		ActionContext act = ActionContext.getContext();
-		
+		String type = ServletActionContext.getRequest().getParameter("type");
 		String path = ServletActionContext.getServletContext().getRealPath(savepath);
 		String[] files = Log.getLogList(path);
 		ArrayList<String> res = new ArrayList<>();
@@ -24,13 +25,19 @@ public class LogAction extends ActionSupport {
 			String file = files[i];
 			String[] part = file.split("_");
 			String logtime = part[0];
-			int student_id = new Integer(part[1]).intValue();
-			if (student_id != -1) {
-				String student_name = Student.getStudentByStudentId(student_id).getName();
-				
-				res.add(logtime);
-				res.add(student_name);
-				res.add(file);
+			String role = part[1];
+			int id = new Integer(part[2]).intValue();
+			if (id != -1) {
+				String name = "";
+				if (role.equals("student"))
+					name = Student.getStudentByStudentId(id).getName();
+				else
+					name = Teacher.getTeacherByTeacherId(id).getName();
+				if (role.equals(type)) {
+					res.add(logtime);
+					res.add(name);
+					res.add(file);
+				}
 			}
 		}
 		PageManager pm = new PageManager();
@@ -42,7 +49,10 @@ public class LogAction extends ActionSupport {
 		pm.setNowcolumn(nowcolumn);
 		pm.calcPreColumnAndNextColumn();
 		
-		act.put("studentloglist", res);
+		if (type.equals("teacher"))
+			act.put("teacherloglist", res);
+		else if (type.equals("student"))
+			act.put("studentloglist", res);
 		act.put("each", pm.getEach());
 		act.put("nowcolumn", pm.getNowcolumn());
 		act.put("totalcolumn", pm.getTotalcolumn());

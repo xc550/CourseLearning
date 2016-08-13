@@ -15,7 +15,7 @@
 				<hr>
 				<form class="form-horizontal" action="manager_login" method="post">
 					<div class="form-group">
-						<label for="inputManagerLoginname" class="col-md-2 control-label">学号</label>
+						<label for="inputManagerLoginname" class="col-md-2 control-label">用户名</label>
 						<div class="col-md-8">
 					    	<input type="text" name="manager.loginname" class="form-control" id="inputManagerLoginname">
 					    </div>

@@ -153,9 +153,9 @@ public class Log {
 					+ "\t" + this.getEvent_id() + "\t" + this.getEvent_name());
 	}
 	
-	public static void saveLog(String savepath, Log log) {
+	public static void saveLog(String savepath, Log log, String role) {
 		String datetime = (String) new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-		String path = savepath + File.separator + datetime + "_" + log.getUser_id() + "_" + log.getLog_id() + ".txt";
+		String path = savepath + File.separator + datetime + "_" + role + "_" + log.getUser_id() + "_" + log.getUser_name() + ".txt";
 		String content = log.getLog();
 		FileFunc.writeFile(path, content);
 	}

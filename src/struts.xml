@@ -309,9 +309,9 @@
 			<result type="redirect">manager_teacherlist.action</result>
 		</action>
 		<!-- 日志管理 -->
-		<action name="manager_loglist" class="com.cl.action.LogAction"
+		<action name="manager_get*loglist" class="com.cl.action.LogAction"
 			method="getLogList">
-			<result>/WEB-INF/content/manager/loglist.jsp</result>
+			<result>/WEB-INF/content/manager/{1}loglist.jsp</result>
 		</action>
 		<action name="manager_deletelog" class="com.cl.action.LogAction"
 			method="deleteLog">

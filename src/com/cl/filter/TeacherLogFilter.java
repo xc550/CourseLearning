@@ -135,7 +135,7 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 //				System.out.println("path: " + path);
 				if (!FileFunc.directoryExist(path))
 					FileFunc.createDirectory(path);
-//				Log.saveLog(path, log);
+//				Log.saveLog(path, log, "teacher");
 			}
 			System.out.println("##########End##########\n");
 		}
