@@ -20,7 +20,7 @@
 						<tr><td align="center"><a href="manager_studentlist">学生管理</a></td></tr>
 						<tr><td align="center"><a href="manager_teacherlist">教师管理</a></td></tr>
 						<tr><td align="center"><a href="manager_loglistselection">日志管理</a></td></tr>
-						<!-- <tr><td align="center"><a href="#" target="rightframe">数据恢复(未完成)</a></td></tr> -->
+						<tr><td align="center"><a href="manager_methodlist">方法管理</a></td></tr>
 					</tbody>
 				</table>
 			</div>

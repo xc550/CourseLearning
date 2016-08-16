@@ -35,7 +35,8 @@
 						for (int i = 0; i < courselistnotselected.size(); i++) {
 							int course_id = courselistnotselected.get(i).getCourse_id();
 							ArrayList<CourseTeacher> classes = map.get(new Integer(course_id));
-					%>
+							if (classes.size() != 0) {
+						%>
 						<li class="list-group-item">
 							<strong><%=courselistnotselected.get(i).getCourse_name() %></strong>
 							<%
@@ -43,12 +44,14 @@
 									int class_id = classes.get(j).getClass_id();
 									Teacher te = Teacher.getTeacherByTeacherId(classes.get(j).getId());
 							%>
-							<a href="student_selectcourse?course_id=<%=course_id%>&class_id=<%=class_id%>">
-								<button class="btn btn-primary btn-sm"><%=te.getName() %></button>
-							</a>
-							<% } %>
+								<a href="student_selectcourse?course_id=<%=course_id%>&class_id=<%=class_id%>">
+									<button class="btn btn-primary btn-sm"><%=te.getName() %></button>
+								</a>
+							<%
+								}
+							%>
 						</li>
-					<% } %>
+					<% }} %>
 					</ul>
 				</div>
 				<div class="row">

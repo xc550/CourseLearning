@@ -37,14 +37,6 @@
 						%>
 					</tbody>
 				</table>
-				<table class="table">
-					<thead>
-						<tr><td align="center">功能列表</td></tr>
-					</thead>
-					<tbody>
-						<tr><td align="center"><a href="teacher_getcourseselection">选课</a></td></tr>
-					</tbody>
-				</table>
 			</div>
 		</div>
 	</div>

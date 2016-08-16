@@ -10,6 +10,11 @@
 <body>
 	<div class="container">
 		<div class="row">
+		<div class="page-header">
+			<h1>学习分析管理系统 <small>V2.0</small></h1>
+		</div>
+		</div>
+		<div class="row">
 			<div class="col-md-5 col-md-offset-4">
 				<h2>教师登录</h2><a href="main_loginform">返回</a>
 				<hr>
