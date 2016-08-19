@@ -40,12 +40,12 @@
 							<tr>
 								<td><%=i + 1 %></td>
 								<td><%=methodlist.get(i).getMethod_name() %></td>
-								<td><a href="main_homeworkdownload?filename=<%=methodlist.get(i).getMehtod_path()%>">
+								<td><a href="main_methoddownload?type=method&filename=<%=methodlist.get(i).getMehtod_path()%>">
 											<span class="glyphicon glyphicon-download"></span>
 										</a>
 								</td>
 								<td>
-										<a href="manager_deletehomework?method_id=<%=methodlist.get(i).getMethod_id()%>">
+										<a href="manager_deletemethod?method_id=<%=methodlist.get(i).getMethod_id()%>">
 											<span class="glyphicon glyphicon-remove"></span>
 										</a>
 								</td>
@@ -59,14 +59,24 @@
 				</div>
 				<div class="row">
 					<h2>添加方法</h2>
-					<form class="form-inline" action="manager_addmethod" method="post">
+					<form class="form-horizontal" action="manager_addmethod" method="post" enctype ="multipart/form-data">
 						<div class="form-group">
-							<label class="sr-only" for="inputMethodName">方法名</label>
-							<input type="text" style="width: 150px" name="method_name" class="form-control" id="inputMethodName" placeholder="课程名称">
+							<label for="inputMethodName" class="col-md-2 control-label">方法名</label>
+							<div class="col-md-10">
+								<input type="text" style="width: 150px" name="method.method_name" class="form-control" id="inputMethodName">
+							</div>
 						</div>
 						<div class="form-group">
-							<label for="inputMethodPath">方法</label>
-							<s:file name="upload" label="Select File" id="inputMethodPath"></s:file>
+							<label for="inputMethodComment" class="col-md-2 control-label">方法备注</label>
+							<div class="col-md-10">
+								<input type="text" style="width: 150px" name="method.method_comment" class="form-control" id="inputMethodComment">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputMethodPath" class="col-md-2 control-label">方法文件</label>
+							<div class="col-md-10">
+								<s:file name="upload" label="Select File" id="inputMethodPath"></s:file>
+							</div>
 						</div>
 						<button type="submit" class="btn btn-default">提交</button>
 					</form>

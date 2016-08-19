@@ -13,4 +13,6 @@
 1. 学生日志文件格式：/WEB-INF/log/[datetime]_student_[student_id]_[student_name].txt
 2. 教师日志文件格式：/WEB-INF/log/[datetime]_teacher_[teacher_id]_[teacher_name].txt
 
+#### (3) 方法附近缓存目录存储格式说明：
+/WEB-INF/method/[method_name]
 

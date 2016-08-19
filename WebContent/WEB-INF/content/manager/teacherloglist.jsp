@@ -53,7 +53,7 @@
 										<td><%=j + 1 %></td>
 										<td><%=logtime %></td>
 										<td><%=teacher %></td>
-										<td><a href="main_logdownload?filename=<%=logname%>"><span class="glyphicon glyphicon-download-alt"></span></a></td>
+										<td><a href="main_logdownload?type=log&filename=<%=logname%>"><span class="glyphicon glyphicon-download-alt"></span></a></td>
 										<td><a href="manager_deletelog?logname=<%=logname%>"><span class="glyphicon glyphicon-remove"></span></a></td>
 									</tr>
 								<%

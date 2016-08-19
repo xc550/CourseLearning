@@ -36,7 +36,7 @@
 				<% if (hw.getHomework_accessory() != null) { %>
 				<h5>附件下载</h5>
 				<p><%=hw.getHomework_accessory() %>
-					<a href="main_homeworkdownload?filename=<%=hw.getHomework_accessory()%>">
+					<a href="main_homeworkdownload?type=homeworkaccessory&filename=<%=hw.getHomework_accessory()%>">
 						<span class="glyphicon glyphicon-download"></span>
 					</a>
 				</p>
@@ -67,7 +67,7 @@
 								<td><%=stu.getName() %></td>
 								<td><%=hws.getHomeworkstudent_comment() %></td>
 								<td><%=hws.getHomeworkstudent_accessory() %>
-									<a href="main_homeworkdownload?filename=<%=hws.getStudent_id() %>_<%=hws.getHomeworkstudent_accessory()%>&homework_id=<%=hws.getHomework_id()%>">
+									<a href="main_homeworkdownload?type=studentaccessory&filename=<%=hws.getStudent_id() %>_<%=hws.getHomeworkstudent_accessory()%>&homework_id=<%=hws.getHomework_id()%>">
 										<span class="glyphicon glyphicon-download"></span>
 									</a>
 								</td>

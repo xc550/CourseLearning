@@ -9,18 +9,9 @@
 	
 	<package name="default" extends="struts-default">
 		<!-- 下载 -->
-		<action name="main_homeworkdownload" class="com.cl.action.DownloadAction">
+		<action name="main_*download" class="com.cl.action.DownloadAction">
 			<result type="stream" name="success">
 				<param name="contentType">application/octet-stream;charset=ISO8859-1</param>
-				<param name="inputName">homeworkAccessory</param>
-				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
-				<param name="bufferSizbe">1024*1024</param>
-			</result>
-		</action>
-		<action name="main_logdownload" class="com.cl.action.DownloadAction">
-			<result type="stream" name="success">
-				<param name="contentType">application/octet-stream;charset=ISO8859-1</param>
-				<param name="inputName">log</param>
 				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
 				<param name="bufferSizbe">1024*1024</param>
 			</result>
@@ -340,6 +331,18 @@
 		<action name="manager_methodlist" class="com.cl.action.MethodAction"
 			method="getMethodList">
 			<result>/WEB-INF/content/manager/methodlist.jsp</result>
+		</action>
+		<action name="manager_addmethod" class="com.cl.action.MethodAction"
+			method="addMethod">
+			<result type="redirectAction">
+				<param name="actionName">manager_methodlist.action</param>
+			</result>
+		</action>
+		<action name="manager_deletemethod" class="com.cl.action.MethodAction"
+			method="deleteMethod">
+			<result type="redirectAction">
+				<param name="actionName">manager_methodlist.action</param>
+			</result>
 		</action>
 		<action name="manager_*">
 			<result>/WEB-INF/content/manager/{1}.jsp</result>
