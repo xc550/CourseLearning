@@ -91,9 +91,12 @@ public class EventAction extends ActionSupport {
 	}
 	
 	public String saveEvent() throws Exception {
+		ActionContext act = ActionContext.getContext();
 		Event eve = getEvent();
 //		System.our.println(eve);
-		int section_id = ((Integer)ServletActionContext.getRequest().getSession().getAttribute("section_id")).intValue();
+		int section_id = ((Integer)act.getSession().get("section_id")).intValue();
+		int class_id = ((Integer)act.getSession().get("class_id")).intValue();
+		eve.setClass_id(class_id);
 		eve.setSection_id(section_id);
 		String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 		eve.setStarttime(DateFormator.getDateByPattern(datetime));
@@ -128,9 +131,9 @@ public class EventAction extends ActionSupport {
 			section_name = "总结";
 		}
 		
-		act.getSession().put("section_id", section_id);
 		act.put("eventlist", res);
 		act.put("section_name", section_name);
+		act.getSession().put("section_id", new Integer(section_id));
 		return SUCCESS;
 	}
 }

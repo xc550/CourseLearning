@@ -54,7 +54,6 @@
 									double sum = sectionscore.getReviewandpreview();
 						%>
 							<tr>
-								<td><%=student.getLoginname() %></td>
 								<td><%=student.getName() %></td>
 								<td><%=listening %></td>
 								<td><%=answer %></td>
@@ -74,11 +73,10 @@
 									double sum = new BigDecimal(scorearray.get(i).getAverage()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 						%>
 							<tr>
-								<td><%=student.getLoginname() %></td>
 								<td><%=student.getName() %></td>
 								<%
 									for (int j = 0; j < studentscore.size(); j++) {
-										double score = new BigDecimal(studentscore.get(j).getSum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+										double score = studentscore.get(j).getSum();
 								%>
 									<td><%=score %></td>
 								<%
@@ -97,102 +95,116 @@
 					<h2>总结</h2>
 					<%
 						if (section_id != 0) {
-							double average = ((BigDecimal)request.getAttribute("average")).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-							ArrayList<Student> maxscore = (ArrayList<Student>)request.getAttribute("maxscore");
-							ArrayList<Student> minscore = (ArrayList<Student>)request.getAttribute("minscore");
-							ArrayList<Student> higher = (ArrayList<Student>)request.getAttribute("higher");
-							ArrayList<Student> lower = (ArrayList<Student>)request.getAttribute("lower");
-							ArrayList<Student> cheating = (ArrayList<Student>)request.getAttribute("cheating");
+							double average = ((BigDecimal)request.getAttribute("average")).doubleValue();
+							ArrayList<String> maxscore = (ArrayList<String>)request.getAttribute("maxscore");
+							ArrayList<String> minscore = (ArrayList<String>)request.getAttribute("minscore");
+							ArrayList<String> higher = (ArrayList<String>)request.getAttribute("higher");
+							ArrayList<String> lower = (ArrayList<String>)request.getAttribute("lower");
+							ArrayList<String> cheating = (ArrayList<String>)request.getAttribute("cheating");
 					%>
 						<p><strong>平均分：</strong><%=average %></p>
 						<p><strong>最高分：</strong></p>
 						<p>
 						<% for (int i = 0; i < maxscore.size(); i++) { %>
-							<%=maxscore.get(i).getName() %>
+							<%=maxscore.get(i) %>
 						<% } %>
 						</p>
 						<p><strong>最低分：</strong></p>
 						<p>
 						<% for (int i = 0; i < minscore.size(); i++) { %>
-							<%=minscore.get(i).getName() %>
+							<%=minscore.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>高于平均分：</strong></p>
 						<p>
 						<% for (int i = 0; i < higher.size(); i++) { %>
-							<%=higher.get(i).getName() %>
+							<%=higher.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>低于平均分：</strong></p>
 						<p>
 						<% for (int i = 0; i < lower.size(); i++) { %>
-							<%=lower.get(i).getName() %>
+							<%=lower.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>怀疑作弊的：</strong></p>
 						<p>
 						<% for (int i = 0; i < cheating.size(); i++) { %>
-							<%=cheating.get(i).getName() %>
+							<%=cheating.get(i)%>
 						<% } %>
 						</p>
 					<%
 						} else {
-							double average = ((BigDecimal)request.getAttribute("average")).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-							ArrayList<Student> maxscore = (ArrayList<Student>)request.getAttribute("maxscore");
-							ArrayList<Student> minscore = (ArrayList<Student>)request.getAttribute("minscore");
-							ArrayList<Student> higher = (ArrayList<Student>)request.getAttribute("higher");
-							ArrayList<Integer> lower = (ArrayList<Integer>)request.getAttribute("lower");
-							ArrayList<Integer> cheating = (ArrayList<Integer>)request.getAttribute("cheating");
-							ArrayList<Section> coreprob = (ArrayList<Section>)request.getAttribute("coreproblem");
+							double average = ((BigDecimal)request.getAttribute("average")).doubleValue();
+							ArrayList<String> maxscore = (ArrayList<String>)request.getAttribute("maxscore");
+							ArrayList<String> minscore = (ArrayList<String>)request.getAttribute("minscore");
+							ArrayList<String> higher = (ArrayList<String>)request.getAttribute("higher");
+							ArrayList<String> lower = (ArrayList<String>)request.getAttribute("lower");
+							ArrayList<String> cheating = (ArrayList<String>)request.getAttribute("cheating");
+							ArrayList<String> coreprob = (ArrayList<String>)request.getAttribute("coreproblem");
 					%>
 						<p><strong>平均分：</strong><%=average %></p>
 						<p><strong>最高分：</strong></p>
 						<p>
 						<% for (int i = 0; i < maxscore.size(); i++) { %>
-							<%=maxscore.get(i).getName() %>
+							<%=maxscore.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>最低分：</strong></p>
 						<p>
 						<% for (int i = 0; i < minscore.size(); i++) { %>
-							<%=minscore.get(i).getName() %>
+							<%=minscore.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>高于平均分：</strong></p>
 						<p>
 						<% for (int i = 0; i < higher.size(); i++) { %>
-							<%=higher.get(i).getName() %>
+							<%=higher.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>低于平均分及其问题单元：</strong></p>
-						<p>
 						<%
-							for (int i = 0; i < lower.size(); i += 2) { 
-								String student_name = Student.getStudentByStudentId(lower.get(i).intValue()).getName();
-								String prob_name = Section.getSectionBySectionId(lower.get(i + 1).intValue()).getSection_name();
+							boolean isNumb = true;
+							for (int i = 0, size = 0; i < lower.size(); i++) { 
+								if (isNumb) {
+									size = new Integer(lower.get(i++)).intValue();
+									String student_name = lower.get(i);
+									isNumb = false;
 						%>
-							<p><%=student_name %>: <%=prob_name %></p>
-						<% } %>
-						</p>
+							<p><%=student_name%>：</p> 
+						<%
+								}
+								else {
+						%>
+							<p>
+						<%
+									for (int j = 0; j < size; j++, i++) {
+										String prob_name = lower.get(i);
+						%>
+							<%=prob_name%>
+						<%
+									}
+						%>
+							</p>
+						<%
+								}
+							}
+						%>
 						<p><strong>怀疑作弊的：</strong></p>
-						<p>
 						<%
 							for (int i = 0; i < cheating.size(); i += 2) {
-								String student_name = Student.getStudentByStudentId(cheating.get(i).intValue()).getName();
-								int times = cheating.get(i + 1).intValue();
+								String student_name = cheating.get(i);
+								int times = new Integer(cheating.get(i + 1)).intValue();
 						%>
 							<p><%=student_name %>: <%=times %>次</p>
 						<% } %>
-						</p>
 						<p><strong>难点：</strong></p>
-						<p>
 						<%
 							for (int i = 0; i < coreprob.size(); i++) {
-								String coreprob_name = coreprob.get(i).getSection_name();
+								String coreprob_name = coreprob.get(i);
 						%>
 							<p><%=coreprob_name %></p>
 						<% } %>
-						</p>
 					<%
 						}
 					%>

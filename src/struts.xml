@@ -8,7 +8,11 @@
 	<constant name="struts.i18n.encoding" value="utf-8"/>
 	
 	<package name="default" extends="struts-default">
-		<!-- 下载 -->
+		<action name="main_loginform" class="com.cl.action.MainAction">
+			<result name="success">/WEB-INF/content/loginform.jsp</result>
+		</action>
+		
+		<!-- 下载 homework -->
 		<action name="main_*download" class="com.cl.action.DownloadAction">
 			<result type="stream" name="success">
 				<param name="contentType">application/octet-stream;charset=ISO8859-1</param>
@@ -73,6 +77,18 @@
 			method="getHomeworkList">
 			<result>/WEB-INF/content/teacher/homework.jsp</result>
 		</action>
+		<action name="teacher_addhomework" class="com.cl.action.HomeworkAction"
+			method="addHomework">
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action>
+		<!-- <action name="teacher_updatehomework" class="com.cl.action.HomeworkAction"
+			method="updateHomework">  
+			<result type="redirectAction">
+				<param name="actionName">teacher_managehomework.action</param>
+			</result>
+		</action> -->
 		<action name="teacher_deletehomework" class="com.cl.action.HomeworkAction"
 			method="deleteHomework">
 			<result type="redirectAction">
@@ -87,18 +103,6 @@
 		</action>
 		<action name="teacher_updatehomeworkaccessory" class="com.cl.action.HomeworkAction"
 			method="updataHomeworkAccessory">
-			<result type="redirectAction">
-				<param name="actionName">teacher_managehomework.action</param>
-			</result>
-		</action>
-		<action name="teacher_addhomework" class="com.cl.action.HomeworkAction"
-			method="addHomework">
-			<result type="redirectAction">
-				<param name="actionName">teacher_managehomework.action</param>
-			</result>
-		</action>
-		<action name="teacher_updatehomework" class="com.cl.action.HomeworkAction"
-			method="updateHomework">  
 			<result type="redirectAction">
 				<param name="actionName">teacher_managehomework.action</param>
 			</result>
@@ -130,7 +134,7 @@
 				<param name="actionName">teacher_managesection.action</param>
 			</result>
 		</action>
-		<!-- 权值管理 -->
+		<!-- 权值管理 knowledge / section -->
 		<action name="teacher_manage*weight" class="com.cl.action.WeightAction"
 			method="getWeight">
 			<result>/WEB-INF/content/teacher/update{1}weight.jsp</result>

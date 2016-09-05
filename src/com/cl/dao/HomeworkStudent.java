@@ -54,6 +54,13 @@ public class HomeworkStudent {
 		this.homeworkstudent_accessory = homeworkstudent_accessory;
 	}
 	
+	@Override
+	public String toString() {
+		return "homeworkstudent_id:" + this.getHomeworkstudent_id() + "#homework_id:" + this.getHomework_id() 
+			+ "#student_id:" + this.getStudent_id() + "#homeworkstudent_comment:" + this.getHomeworkstudent_comment() 
+			+ "#homeworkstudent_accessory:" + this.getHomeworkstudent_accessory() + "#";
+	}
+	
 	public static HomeworkStudent getInstance() {
 		return new HomeworkStudent();
 	}
@@ -64,7 +71,7 @@ public class HomeworkStudent {
 		HomeworkStudent hws = null;
 		ResultSet rs = DBHelper.execQuery(con, sql);
 		try {
-			while (rs.next()) {
+			if (rs.next()) {
 				hws = getInstance();
 				int homework_id = rs.getInt("homework_id");
 				int student_id = rs.getInt("student_id");

@@ -89,7 +89,7 @@ public class HomeworkAction extends ActionSupport {
 		
 		act.put("sectionlist", sectionlist);
 		act.put("homeworklist", homework);
-		act.put("user_id", user_id);
+		act.put("user_id", new Integer(user_id));
 		return SUCCESS;
 	}
 	

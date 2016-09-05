@@ -191,6 +191,8 @@ public class Homework {
 	}
 	
 	public static void deleteHomeworkByHomeworkId(int homework_id) {
+		HomeworkStudent.deleteHomeworkStudentByHomeworkId(homework_id);
+		
 		String sql = "delete from homework where homework_id=" + homework_id + ";"; 
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);
@@ -198,22 +200,55 @@ public class Homework {
 	}
 	
 	public static void deleteHomewrokByCourseIdAndClassIdAndSectionId(int course_id, int class_id, int section_id) {
-		String sql = "delete from homework where course_id=" + course_id + " and class_id=" + class_id + " and section_id=" + section_id + ";"; 
 		Connection con = DBHelper.getConnection();
+		String sql = "select homework_id where course_id=" + course_id + " and class_id=" + class_id + " and section_id=" + section_id + ";";
+		ResultSet rs = DBHelper.execQuery(con, sql);
+		try {
+			while (rs.next()) {
+				int homework_id = rs.getInt("homework_id");
+				HomeworkStudent.deleteHomeworkStudentByHomeworkId(homework_id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		sql = "delete from homework where course_id=" + course_id + " and class_id=" + class_id + " and section_id=" + section_id + ";"; 
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}
 	
 	public static void deleteHomewrokByCourseIdAndClassId(int course_id, int class_id) {
-		String sql = "delete from homework where course_id=" + course_id + " and class_id=" + class_id + ";"; 
 		Connection con = DBHelper.getConnection();
+		String sql = "select homework_id where course_id=" + course_id + " and class_id=" + class_id + ";";
+		ResultSet rs = DBHelper.execQuery(con, sql);
+		try {
+			while (rs.next()) {
+				int homework_id = rs.getInt("homework_id");
+				HomeworkStudent.deleteHomeworkStudentByHomeworkId(homework_id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		sql = "delete from homework where course_id=" + course_id + " and class_id=" + class_id + ";"; 
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}
 	
 	public static void deleteHomewrokByCourseId(int course_id) {
-		String sql = "delete from homework where course_id=" + course_id + ";"; 
 		Connection con = DBHelper.getConnection();
+		String sql = "select homework_id where course_id=" + course_id + ";";
+		ResultSet rs = DBHelper.execQuery(con, sql);
+		try {
+			while (rs.next()) {
+				int homework_id = rs.getInt("homework_id");
+				HomeworkStudent.deleteHomeworkStudentByHomeworkId(homework_id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		sql = "delete from homework where course_id=" + course_id + ";"; 
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}

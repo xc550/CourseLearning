@@ -117,7 +117,7 @@ public class KnowledgeWeight {
 	public static void updateKnowledgeWeight(KnowledgeWeight kw) {
 		String sql = "update knowledgeweight set section_id=" + kw.getSection_id() + ", listening_weight=" + kw.getListening_weight()
 				+ ", answer_weight=" + kw.getAnswer_weight() + ", attendance_weight=" + kw.getAttendance_weight() + ", homework_weight="
-				+ kw.getHomework_weight() + ", experiment_weight=" + kw.getExperiment_weight() + "reviewandpreview_weight="
+				+ kw.getHomework_weight() + ", experiment_weight=" + kw.getExperiment_weight() + ", reviewandpreview_weight="
 				+ kw.getReviewandpreview_weight() + " where knowledgeweight_id=" + kw.getKnowledgeweight_id() + ";";
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);

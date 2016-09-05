@@ -22,7 +22,7 @@
 					<thead>
 						<tr>
 							<td align="center">
-								<a href="teacher_welcome.action"><span class="glyphicon glyphicon-arrow-left"></span></a>
+								<a href="teacher_welcome"><span class="glyphicon glyphicon-arrow-left"></span></a>
 							</td>
 							<td align="left"><%=course_name %></td>
 						</tr>

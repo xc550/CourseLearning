@@ -94,14 +94,14 @@ public class LearningStatus {
 	}
 
 	public static String getClassTimeString(int classtime) {
-		if (classtime >= 3)
-			return "Error";
+		if (classtime < 0 || classtime >= 3)
+			return "null";
 		return classtimetostring[classtime];
 	}
 	
 	public static String getClassString(int classnumber) {
-		if (classnumber >= 3)
-			return "Error";
+		if (classnumber < 0 || classnumber >= 3)
+			return "null";
 		return classtostring[classnumber];
 	}
 	
@@ -282,9 +282,9 @@ public class LearningStatus {
 	}
 	
 	public static void addLeanringStatus(LearningStatus ls) {
-		String sql = "insert into learningstatus(student_id, event_id, classtime, inclass, outclass, method)"
-				+ " values(" + ls.getStudent_id() + ", " + ls.getEvent_id() + ", " + ls.getClasstime()
-				+ ", " + ls.getInclass() + ", " + ls.getOutclass() + ",'" + ls.getMethod() + "');";
+		String sql = "insert into learningstatus(class_id, student_id, event_id, classtime, inclass, outclass, method)"
+				+ " values(" + ls.getClass_id() + ", " + ls.getStudent_id() + ", " + ls.getEvent_id() + ", " 
+				+ ls.getClasstime() + ", " + ls.getInclass() + ", " + ls.getOutclass() + ",'" + ls.getMethod() + "');";
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);

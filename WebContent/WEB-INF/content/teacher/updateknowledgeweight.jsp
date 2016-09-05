@@ -22,10 +22,8 @@
 				<s:action name="sidebar_tea_eventlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
-				<!-- 分2个页面来写是否更好：更新章节权值和更新知识点权值 -->
 				<div class="row">
 					<%
-						int section_id = ((Integer)request.getAttribute("section_id")).intValue();
 						ArrayList<String> columns = (ArrayList<String>) request.getAttribute("columns");
 						KnowledgeWeight kw = (KnowledgeWeight)request.getAttribute("weightlist");
 					%>

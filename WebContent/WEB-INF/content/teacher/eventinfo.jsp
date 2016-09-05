@@ -199,7 +199,7 @@
 		    <div class="modal-header">
 		    	<h2>回复框</h2>
 		    </div>
-		    <form id="replyform" action="teacher_submitbbs?reply_id=-1" method="post">
+		    <form id="replyformforteacher" action="teacher_submitbbs?reply_id=-1" method="post">
 		    	<div class="modal-body">
 					<textarea name="bbs.bbs_content" class="form-control" rows="3"></textarea>
 		    	</div>
@@ -210,13 +210,12 @@
 		</div>
 	  </div>
 	</div>
-	<script type="text/javascript" src="public/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="public/bower_components/jquery/jquery.js"></script>
 	<script type="text/javascript">
 	function changeModal(bbsid) {
-		document.getElementById("replyform").action="teacher_submitbbs?reply_id=" + bbsid;
+		document.getElementById("replyformforteacher").action="teacher_submitbbs?reply_id=" + bbsid;
 	}
 	</script>
-	<script type="text/javascript" src="public/js/main.js"></script>
 	<script type="text/javascript" src="public/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 </body>
 </html>

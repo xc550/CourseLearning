@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.cl.dao.Log;
 import com.cl.dao.Student;
 import com.cl.dao.Teacher;
-import com.cl.entity.Log;
 import com.cl.util.PageManager;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

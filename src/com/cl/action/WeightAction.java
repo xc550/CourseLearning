@@ -69,7 +69,6 @@ public class WeightAction extends ActionSupport {
 			act.put("columns", columns);
 			act.getSession().put("weightlist", res);
 		}
-		act.put("section_id", section_id);
 		return SUCCESS;
 	}
 	

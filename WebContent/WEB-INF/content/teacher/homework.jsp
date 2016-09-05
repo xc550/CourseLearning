@@ -125,6 +125,5 @@
 	</div>
 	<script type="text/javascript" src="public/bower_components/jquery/jquery.js"></script>
 	<script type="text/javascript" src="public/bower_components/bootstrap/js/collapse.js"></script>
-	<script src="public/js/calendar.js"></script>
 </body>
 </html>

@@ -103,19 +103,25 @@ public class SectionScore {
 		return new SectionScore();
 	}
 	
-	public static ArrayList<SectionScore> getSectionScoreListBySectionId(int section_id, int student_id) {
-		String sql = "select * from sectionscore where section_id = " + section_id;
+	public static ArrayList<SectionScore> getSectionScoreListBySectionIdAndStudentId(int section_id, int student_id) {
+		String sql = "select * from sectionscore";
+		if (section_id != -1 || student_id != -1)
+			sql = sql + " where ";
+		if (section_id != -1)
+			sql = sql + "section_id = " + section_id;
+		if (section_id != -1 && student_id != -1)
+			sql = sql + " and ";
 		if (student_id != -1)
-			sql = sql + " and student_id = " + student_id;
+			sql = sql + "student_id = " + student_id;
 		sql += ";";
 		Connection con = DBHelper.getConnection();
 		ResultSet rs = DBHelper.execQuery(con, sql);
 		ArrayList<SectionScore> al = new ArrayList<>();
-		KnowledgeWeight sectionweight = KnowledgeWeight.getKnowledgeWeightBySectionId(section_id);
 		
 		try {
 			while (rs.next()) {
 				SectionScore sectionscore = SectionScore.getInstance();
+				section_id = rs.getInt("section_id");
 				student_id = rs.getInt("student_id");
 				double listening = rs.getFloat("listening");
 				double answer = rs.getFloat("answer");
@@ -133,6 +139,7 @@ public class SectionScore {
 				sectionscore.setExperiment(experiment);
 				sectionscore.setReviewandpreview(reviewandpreview);
 				
+				KnowledgeWeight sectionweight = KnowledgeWeight.getKnowledgeWeightBySectionId(section_id);
 				double sum = sectionscore.getListening() * sectionweight.getListening_weight()
 						+ sectionscore.getAnswer() * sectionweight.getAnswer_weight()
 						+ sectionscore.getAttendance() * sectionweight.getAttendance_weight()

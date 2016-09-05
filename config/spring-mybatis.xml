@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd ">
+
+	
+
+	<!-- spring的配置文件 -->
+	<context:property-placeholder location="classpath:db.propertis" />
+	<!-- 配置数据源 不同的数据源property属性名称是不一样的 -->
+	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+
+
+	<!-- 配置sessionFactory -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描xml文件 ，省略大量xml映射文件的配置 -->
+		<property name="mapperLocations" value="classpath:com/cl/**/*.xml" />
+		<!-- 自动扫描实体类 并配置别名 -->
+		<property name="typeAliasesPackage" value="com.cl.entity"></property>
+	</bean>
+
+	<!-- 配置mapper接口映射的自动扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zsrt.crm.*.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+	</bean>
+
+	<!-- mybatis操作数据库添加事务控制，spring使用jdbc的事务控制类 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!--事务 通知 -->
+	<tx:advice id="txadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 所有方法都加入事务管理中，读取的数据一定是已经提交后的数据 -->
+			<tx:method name="*" propagation="REQUIRED" isolation="READ_COMMITTED" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置AOP 设置切入点 -->
+	<aop:config>
+		<aop:advisor advice-ref="txadvice"
+			pointcut="execution(* com.zsrt.crm.*.service.*.*(..))" />
+	</aop:config>
+
+</beans>

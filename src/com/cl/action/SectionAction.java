@@ -22,7 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class SectionAction extends ActionSupport {
 	private Section section;
-	private final String[] SectionColumns = {"学号", "学生姓名", "课堂听讲", "课堂回答问题", "考勤", "作业", "实验", "复习预习", "总评"};
+	private final String[] SectionColumns = {"学生姓名", "课堂听讲", "课堂回答问题", "考勤", "作业", "实验", "复习预习", "总评"};
 		
 	public Section getSection() {
 		return section;
@@ -61,8 +61,8 @@ public class SectionAction extends ActionSupport {
 		
 		act.put("sectionlist", res);
 		act.put("course_name", course_name);
-		act.getSession().put("class_id", class_id);
-		act.getSession().put("course_id", course_id);
+		act.getSession().put("class_id", new Integer(class_id));
+		act.getSession().put("course_id", new Integer(course_id));
 		act.getSession().remove("section_id");
 		act.getSession().remove("event_id");
 		return SUCCESS;
@@ -88,7 +88,10 @@ public class SectionAction extends ActionSupport {
 	public String getSectionSummaryForTeacher() throws Exception {
 		ActionContext act = ActionContext.getContext();
 		int section_id = ((Integer)act.getSession().get("section_id")).intValue();
+		String section_name = "";
 		if (section_id != 0) {
+			section_name = Section.getSectionBySectionId(section_id).getSection_name();
+			
 			ArrayList<String> columns = new ArrayList<>();
 			for (int i = 0; i < SectionColumns.length; i++)
 				columns.add(SectionColumns[i]);
@@ -116,8 +119,9 @@ public class SectionAction extends ActionSupport {
 			act.put("cheating", sectioncalc.suspectCheating());
 		}
 		else {
+			section_name = "课程总结";
+			
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
-			CourseCalc coursecalc = new CourseCalc(course_id);
 			ArrayList<Section> section = Section.getSectionListByCourseId(course_id);
 			ArrayList<String> columns = new ArrayList<>();
 			columns.add("学号");
@@ -125,8 +129,11 @@ public class SectionAction extends ActionSupport {
 			for (int i = 0; i < section.size(); i++)
 				columns.add(section.get(i).getSection_name());
 			columns.add("总评");
+
+			CourseCalc coursecalc = new CourseCalc(course_id);
 			ArrayList<CourseScore> res = coursecalc.getSource();
 			for (int i = 0; i < res.size(); i++) {
+				System.out.println(res.get(i).getSectionscore().size());
 				for (int j = 0; j < res.get(i).getSectionscore().size(); j++) {
 					res.get(i).getSectionscore().get(j).setSum(new BigDecimal(res.get(i).getSectionscore().get(j).getSum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				}
@@ -144,6 +151,8 @@ public class SectionAction extends ActionSupport {
 			act.put("cheating", coursecalc.suspectCheating());
 			act.put("coreproblem", coursecalc.getCorePrblem());
 		}
+		act.put("section_name", section_name);
+		act.getSession().remove("event_id");
 		return SUCCESS;
 	}
 	
@@ -157,7 +166,7 @@ public class SectionAction extends ActionSupport {
 			ArrayList<String> columns = new ArrayList<>();
 			for (int i = 2; i < SectionColumns.length; i++)
 				columns.add(SectionColumns[i]);
-			ArrayList<SectionScore> res = SectionScore.getSectionScoreListBySectionId(section_id, student_id);
+			ArrayList<SectionScore> res = SectionScore.getSectionScoreListBySectionIdAndStudentId(section_id, student_id);
 			for (int i = 0; i < res.size(); i++) {
 				res.get(i).setListening(new BigDecimal(res.get(i).getListening()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				res.get(i).setAnswer(new BigDecimal(res.get(i).getAnswer()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -197,8 +206,7 @@ public class SectionAction extends ActionSupport {
 			act.put("scorearray", res);
 		}
 		act.put("section_name", section_name);
-		if (act.getSession().get("event_id") != null)
-			act.getSession().remove("event_id");
+		act.getSession().remove("event_id");
 		return SUCCESS;
 	}
 }
