@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cl.dao.StudentDao">
+	<update id="createTable">
+		create table if not exist student(
+			student_id int(5) auto_increment,
+			loginname varchar(255),
+			password varchar(255),
+			name varchar(255),
+			gender varchar(255),
+			head varchar(255),
+			primary key(student_id) 
+		)
+	</update>
+	
+	<select id="check" resultType="Student">
+		select * from student 
+		<where>
+			loginname=#{loginname} and password=#{password};
+		</where>
+	</select>
+	
+	<select id="getStudentByLoginname">
+		select * from student 
+		<where>
+			loginname=#{loginname}
+		</where>
+	</select>
+	
+	<select id="getStudentByStudentId">
+		select * from student
+		<where>
+			student_id=#{student_id}
+		</where>
+	</select>
+	
+	<select id="getStudentList" resultType="Student">
+		select * from student
+	</select>
+	
+	<insert id="addStudent" parameterType="Student">
+		insert into student(loginname, password, name, gender, head)
+			values(#{loginname}, #{password}, #{name}, #{gender}, #{head})
+	</insert>
+	
+	<delete id="deleteStudentByStudentId">
+		delete from student
+		<where>
+			student_id=#{student_id}
+		</where>
+	</delete>
+	
+	<delete id="deleteStudentByStudentLoginname">
+		delete from student 
+		<where>
+			loginname=#{loginname}
+		</where>
+	</delete>
+</mapper>

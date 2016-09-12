@@ -15,8 +15,8 @@ public class Event {
 	private int section_id;
 	private String event_content;
 	private String event_type;
-	private Calendar starttime;
-	private Calendar endtime;
+	private String starttime;
+	private String endtime;
 	
 	public int getEvent_id() {
 		return event_id;
@@ -58,19 +58,19 @@ public class Event {
 		this.event_type = event_type;
 	}
 
-	public Calendar getStarttime() {
+	public String getStarttime() {
 		return starttime;
 	}
 
-	public void setStarttime(Calendar starttime) {
+	public void setStarttime(String starttime) {
 		this.starttime = starttime;
 	}
 
-	public Calendar getEndtime() {
+	public String getEndtime() {
 		return endtime;
 	}
 
-	public void setEndtime(Calendar endtime) {
+	public void setEndtime(String endtime) {
 		this.endtime = endtime;
 	}
 
@@ -98,8 +98,8 @@ public class Event {
 				event.setSection_id(section_id);
 				event.setEvent_content(event_content);
 				event.setEvent_type(event_type);
-				event.setStarttime(DateFormator.getDateByPattern(starttime));
-				event.setEndtime(DateFormator.getDateByPattern(endtime));
+				event.setStarttime(starttime);
+				event.setEndtime(endtime);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -129,8 +129,8 @@ public class Event {
 				event.setSection_id(section_id);
 				event.setEvent_content(event_content);
 				event.setEvent_type(event_type);
-				event.setStarttime(DateFormator.getDateByPattern(starttime));
-				event.setEndtime(DateFormator.getDateByPattern(endtime));
+				event.setStarttime(starttime);
+				event.setEndtime(endtime);
 				
 				res.add(event);
 			}
@@ -144,8 +144,7 @@ public class Event {
 	public static void addEvent(Event event) {
 		String sql = "insert into event(class_id, section_id, event_content, event_type, starttime, endtime) "
 				+ "values(" + event.getClass_id() + ", " + event.getSection_id() + ", '" + event.getEvent_content() 
-				+ "', '" + event.getEvent_type() + "', '" + DateFormator.getDateCalendarToString(event.getStarttime()) 
-				+ "', '" + DateFormator.getDateCalendarToString(event.getEndtime()) + "');";
+				+ "', '" + event.getEvent_type() + "', '" + event.getStarttime() + "', '" + event.getEndtime() + "');";
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);

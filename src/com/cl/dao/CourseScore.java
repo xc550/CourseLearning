@@ -1,5 +1,6 @@
 package com.cl.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,32 +39,16 @@ public class CourseScore {
 	}
 	
 	public double getAverage() {
-		ArrayList<SectionScore> rs = getSectionscore();
-		if (rs.size() == 0)
-			return 0;
 		double avg = 0;
-		for (int i = 0; i < rs.size(); i++) {
-			if (rs.get(i).getSum() == -1) {
+		BigDecimal inv = new BigDecimal(-1);
+		for (int i = 0; i < sectionscore.size(); i++) {
+			if (new BigDecimal(sectionscore.get(i).getSum()).equals(inv)) {
 				avg = -1;
 				break;
 			}
-			avg += Section.getSectionBySectionId(rs.get(i).getSection_id()).getSection_weight() * rs.get(i).getSum();
+			avg += Section.getSectionBySectionId(sectionscore.get(i).getSection_id()).getSection_weight() * sectionscore.get(i).getSum();
 		}
-		return avg; 
-	}
-	
-	public Section getWorstSection() {
-		Section section = null;
-		double infl = 0;
-		ArrayList<Section> res = Section.getSectionListByCourseId(course_id);
-		for (int i = 0; i < sectionscore.size(); i++) {
-			double f = sectionscore.get(i).getSum() * res.get(i).getSection_weight();
-			if (f > infl) {
-				section = Section.getSectionBySectionId(sectionscore.get(i).getSection_id());
-				infl = f; 
-			}
-		}
-		return section;
+		return avg;
 	}
 	
 	public static ArrayList<CourseScore> getCourseScoreList(int course_id) {
@@ -102,7 +87,7 @@ public class CourseScore {
 					}
 				});
 				
-				System.out.println("before: " + tmp.size() + " " + sectionlist.size());
+//				System.out.println("before: " + tmp.size() + " " + sectionlist.size());
 				for (int i = 0, j = 0; i < sectionlist.size(); i++) {
 					boolean ins = true;
 					if (j < tmp.size() && tmp.get(j).getSection_id() == sectionlist.get(i)) {
@@ -118,7 +103,7 @@ public class CourseScore {
 						j++;
 					}
 				}
-				System.out.println("after: " + tmp.size() + " " + sectionlist.size());
+//				System.out.println("after: " + tmp.size() + " " + sectionlist.size());
 				coursescore.setSectionscore(tmp);
 				res.add(coursescore);
 			}

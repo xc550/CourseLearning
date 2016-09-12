@@ -95,23 +95,20 @@ public class StudentLogFilter extends LogFilter implements Filter {
 		
 //		get section info
 		Section section = Section.getInstance();
+		section.setCourse_id(course_id);
+		section.setSection_weight(INVAILD);
 		if (section_id != INVAILD) {
 			if (section_id != 0) {
 				section = Section.getSectionBySectionId(section_id);
 			}
 			else {
-				section.setCourse_id(course_id);
-				section.setCourse_id(course_id);
 				section.setSection_id(section_id);
 				section.setSection_name("课程总结");
-				section.setSection_weight(-1);
 			}
 		}
 		else {
-			section.setCourse_id(course_id);
 			section.setSection_id(section_id);
 			section.setSection_name("null");
-			section.setSection_weight(-1);
 		}
 		
 //		get event info
@@ -184,6 +181,7 @@ public class StudentLogFilter extends LogFilter implements Filter {
 		
 		KnowledgeWeight kw = KnowledgeWeight.getInstance();
 		kw.setSection_id(section_id);
+		kw.setKnowledgeweight_id(INVAILD);
 		kw.setListening_weight(INVAILD);
 		kw.setAnswer_weight(INVAILD);
 		kw.setAttendance_weight(INVAILD);
@@ -231,32 +229,44 @@ public class StudentLogFilter extends LogFilter implements Filter {
 			String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 			Calendar nowtime = DateFormator.getDateByPattern(datetime);
 			req.setCharacterEncoding("utf-8");
-			Log log = createLog(nowtime, hreq);
-			
-			if (log.getBbs().getReply_id() != -1 && log.getBbs().getReply_id() != INVAILD)
-				subaction = "replybbs";
-			
-			boolean show = true;
-			String propertiespath = (StudentLogFilter.class.getResource("") + "studentlog.properties").substring(5);
-			String actioninchinese = FileFunc.readFromPropertiesFile(propertiespath, subaction);
-			if (actioninchinese == "")
-				show = false;
-			else
-				log.setAction(actioninchinese);
-			
-			chain.doFilter(req, res);
-			
-			if (subaction.equals("submithomework") && log.getUser_id() != INVAILD && log.getHw().getHomework_id() != INVAILD)
-				log.setHws(HomeworkStudent.getHomeworkStudentByHomeworkIdAndStudentId(log.getHw().getHomework_id(), log.getUser_id()));
-			
-			if (show) {
-				log.show();
-				String path = hreq.getServletContext().getRealPath(savepath);
-//				System.out.println("path: " + path);
-				if (!FileFunc.directoryExist(path))
-					FileFunc.createDirectory(path);
+			boolean status = true;
+			Log log = Log.getInstance();
+			if (req.getParameter("student.loginname") != null && req.getParameter("student.password") != null) {
+				String loginname = req.getParameter("student.loginname");
+				String password = req.getParameter("student.password");
+				if (!Student.check(loginname, password))
+					status = false;
+			}
+			if (status) {
+				log = createLog(nowtime, hreq);
+				if (log.getBbs().getReply_id() != -1 && log.getBbs().getReply_id() != INVAILD)
+					subaction = "replybbs";
 				
-//				Log.saveLog(path, log, "student");
+				boolean show = true;
+				String propertiespath = (StudentLogFilter.class.getResource("") + "studentlog.properties").substring(5);
+				String actioninchinese = FileFunc.readFromPropertiesFile(propertiespath, subaction);
+				if (actioninchinese == "")
+					show = false;
+				else
+					log.setAction(actioninchinese);
+				
+				chain.doFilter(req, res);
+				
+				if (subaction.equals("submithomework") && log.getUser_id() != INVAILD && log.getHw().getHomework_id() != INVAILD)
+					log.setHws(HomeworkStudent.getHomeworkStudentByHomeworkIdAndStudentId(log.getHw().getHomework_id(), log.getUser_id()));
+				
+				if (show) {
+					log.show();
+					String path = hreq.getServletContext().getRealPath(savepath);
+	//				System.out.println("path: " + path);
+					if (!FileFunc.directoryExist(path))
+						FileFunc.createDirectory(path);
+					
+	//				Log.saveLog(path, log, "student");
+				}
+			}
+			else {
+				chain.doFilter(req, res);
 			}
 //			System.out.println("##########End##########\n");
 		}

@@ -36,7 +36,7 @@ public class EventAction extends ActionSupport {
 			event_id = new Integer(ServletActionContext.getRequest().getParameter("event_id")).intValue();
 		else
 			event_id = ((Integer)act.getSession().get("event_id")).intValue();
-
+		
 		ArrayList<String> columns = new ArrayList<>();
 		for (int i = 0; i < LearnintStatusColumns.length; i++)
 			columns.add(LearnintStatusColumns[i]);
@@ -93,13 +93,12 @@ public class EventAction extends ActionSupport {
 	public String saveEvent() throws Exception {
 		ActionContext act = ActionContext.getContext();
 		Event eve = getEvent();
-//		System.our.println(eve);
 		int section_id = ((Integer)act.getSession().get("section_id")).intValue();
 		int class_id = ((Integer)act.getSession().get("class_id")).intValue();
 		eve.setClass_id(class_id);
 		eve.setSection_id(section_id);
 		String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-		eve.setStarttime(DateFormator.getDateByPattern(datetime));
+		eve.setStarttime(datetime);
 		Event.addEvent(eve);
 		return SUCCESS;
 	}

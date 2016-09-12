@@ -2,8 +2,12 @@ package com.cl.util;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import com.cl.dao.CourseScore;
 import com.cl.dao.Section;
@@ -12,6 +16,7 @@ import com.cl.dao.Student;
 
 public class CourseCalc {
 	private ArrayList<CourseScore> source;
+	private final BigDecimal inv = new BigDecimal(-1);
 	
 	public CourseCalc(int course_id) {
 		source = CourseScore.getCourseScoreList(course_id);
@@ -28,10 +33,8 @@ public class CourseCalc {
 	public double getAverage() {
 		double res = 0;
 		for (int i = 0; i < source.size(); i++) {
-			if (!new BigDecimal(source.get(i).getAverage()).equals(-1)) {
-				res = -1;
-				break;
-			}
+			if (new BigDecimal(source.get(i).getAverage()).equals(inv))
+				return -1;
 			res += source.get(i).getAverage();
 		}
 		if (source.size() > 0)
@@ -40,25 +43,29 @@ public class CourseCalc {
 	}
 	
 	public double getMax() {
-		double max = -1.0;
+		BigDecimal max = new BigDecimal(-1);
 		for (int i = 0; i < source.size(); i++) {
-			max = Math.max(max, source.get(i).getAverage());
+			BigDecimal val = new BigDecimal(source.get(i).getAverage());
+			if (!max.equals(max.max(val)))
+				max = val;
 		}
-		return max;
+		return max.doubleValue();
 	}
 	
 	public double getMin() {
-		double min = 200.0;
+		BigDecimal min = new BigDecimal(200);
 		for (int i = 0; i < source.size(); i++) {
-			min = Math.min(min, source.get(i).getAverage());
+			BigDecimal val = new BigDecimal(source.get(i).getAverage());
+			if (!min.equals(min.min(val)))
+				min = val;
 		}
-		return min;
+		return min.doubleValue();
 	}
 	
 	public ArrayList<String> getMaxScore() {
 		BigDecimal max = new BigDecimal(getMax());
 		ArrayList<String> res = new ArrayList<>();
-		if (!max.equals(-1)) {
+		if (!max.equals(inv)) {
 			for (int i = 0; i < source.size(); i++) {
 				BigDecimal score = new BigDecimal(source.get(i).getAverage());
 				if (max.equals(score)) {
@@ -72,7 +79,7 @@ public class CourseCalc {
 	public ArrayList<String> getMinScore() {
 		BigDecimal min = new BigDecimal(getMin());
 		ArrayList<String> res = new ArrayList<>();
-		if (!min.equals(-1)) {
+		if (!min.equals(inv)) {
 			for (int i = 0; i < source.size(); i++) {
 				BigDecimal score = new BigDecimal(source.get(i).getAverage());
 				if (min.equals(score)) {
@@ -86,7 +93,7 @@ public class CourseCalc {
 	public ArrayList<String> getHigher() {
 		BigDecimal avg = new BigDecimal(getAverage());
 		ArrayList<String> res = new ArrayList<>();
-		if (!avg.equals(-1)) {
+		if (!avg.equals(inv)) {
 			for (int i = 0; i < source.size(); i++) {
 				BigDecimal score = new BigDecimal(source.get(i).getAverage());
 				if (score.equals(avg.max(score))) {
@@ -130,7 +137,7 @@ public class CourseCalc {
 	public ArrayList<String> getLower() {
 		BigDecimal averge = new BigDecimal(getAverage());
 		ArrayList<String> res = new ArrayList<>();
-		if (!averge.equals(-1)) {
+		if (!averge.equals(inv)) {
 //			计算章节j的平均学习价值
 			ArrayList<SectionScore> avg = new ArrayList<>();
 			ArrayList<Section> weight = new ArrayList<>();
@@ -172,7 +179,7 @@ public class CourseCalc {
 				BigDecimal score = new BigDecimal(source.get(i).getAverage());
 				if (score.equals(averge.min(score))) {
 					ArrayList<String> sec = getProblemInLower(avg, weight, source.get(i).getSectionscore());
-					System.out.println("Student: " + source.get(i).getStudent_id());
+//					System.out.println("Student: " + source.get(i).getStudent_id());
 					if (sec != null) {
 						res.add(new Integer(sec.size()).toString());
 						res.add(Student.getStudentByStudentId(source.get(i).getStudent_id()).getName());
@@ -186,10 +193,57 @@ public class CourseCalc {
 	
 	public ArrayList<String> suspectCheating() {
 		ArrayList<String> res = new ArrayList<>();
+		HashMap<Integer, BigDecimal> hm = new HashMap<>();
+		HashMap<Integer, Integer> co = new HashMap<>();
+		HashMap<Integer, Integer> stu = new HashMap<>();
 		for (int i = 0; i < source.size(); i++) {
 			ArrayList<SectionScore> data = source.get(i).getSectionscore();
 			for (int j = 0; j < data.size(); j++) {
-				
+				int section_id = data.get(j).getSection_id();
+				if (hm.containsKey(section_id)) {
+					hm.put(section_id, new BigDecimal(hm.get(section_id).doubleValue() + data.get(j).getSum()));
+					co.put(section_id, co.get(section_id) + 1);
+				}
+				else {
+					hm.put(section_id, new BigDecimal(data.get(j).getSum()));
+					co.put(section_id, 1);
+				}
+			}
+		}
+		
+		for (int i = 0; i < source.size(); i++) {
+			int student_id = source.get(i).getStudent_id();
+			ArrayList<SectionScore> data = source.get(i).getSectionscore();
+			for (int j = 0; j < data.size(); j++) {
+				int section_id = data.get(j).getSection_id();
+				BigDecimal score = new BigDecimal(data.get(j).getSum());
+				BigDecimal avg = hm.get(section_id).divide(new BigDecimal(co.get(section_id).intValue()));
+				BigDecimal homework = new BigDecimal(data.get(j).getHomework());
+				BigDecimal experiment = new BigDecimal(data.get(j).getExperiment());
+				BigDecimal std = new BigDecimal(89.0);
+				if (score.equals(avg.max(score)) 
+						&& (homework.equals(std.max(homework)) || experiment.equals(std.max(experiment)))) {
+					if (stu.containsKey(student_id))
+						stu.put(student_id, stu.get(student_id) + 1);
+					else
+						stu.put(student_id, 1);
+				}
+			}
+		}
+		
+		int maxcheating = -1;
+		for (int i = 0; i < source.size(); i++) {
+			int student_id = source.get(i).getStudent_id();
+			if (stu.containsKey(student_id)) {
+				int cheating = stu.get(student_id);
+				if (cheating > maxcheating) {
+					res.clear();
+					res.add(stu.get(student_id).toString());
+					res.add(Student.getStudentByStudentId(student_id).getName());
+				}
+				else if (cheating == maxcheating) {
+					res.add(Student.getStudentByStudentId(student_id).getName());
+				}
 			}
 		}
 		return res;
@@ -200,9 +254,10 @@ public class CourseCalc {
 		ArrayList<String> data = this.getLower();
 		HashMap<String, Integer> hash = new HashMap<>();
 		boolean isNumb = true;
-		for (int i = 0, size = 0; i < data.size(); i++) {
+		for (int i = 0, size = 0; i < data.size();) {
 			if (isNumb) {
 				size = new Integer(data.get(i++)).intValue();
+				i++;
 				isNumb = false;
 			}
 			else {

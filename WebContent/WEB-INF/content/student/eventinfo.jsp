@@ -37,8 +37,8 @@
 						<%=eve.getEvent_content() %>
 						<small>
 							<%=eve.getEvent_type() %>&nbsp;
-							<%=DateFormator.getDateCalendarToString(eve.getStarttime()) %>&nbsp;~&nbsp;
-							<%=DateFormator.getDateCalendarToString(eve.getEndtime()) %>
+							<%=eve.getStarttime() %>&nbsp;~&nbsp;
+							<%=eve.getEndtime() %>
 						</small>
 					</h2>
 					<form action="student_submitlearningstatus" method="post">
@@ -222,7 +222,7 @@
 		    <div class="modal-header">
 		    	<h2>回复框</h2>
 		    </div>
-		    <form id="replyformforstudent" action="student_submitbbs?reply_id=-1" method="post">
+		    <form id="replyformforstudent" action="student_submitbbs" method="post">
 		    	<div class="modal-body">
 					<textarea name="bbs.bbs_content" class="form-control" rows="3"></textarea>
 		    	</div>

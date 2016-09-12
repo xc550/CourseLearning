@@ -96,23 +96,24 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 		
 //		get section info
 		Section section = Section.getInstance();
+		section.setCourse_id(course_id);
+		section.setSection_weight(INVAILD);
 		if (section_id != INVAILD) {
 			if (section_id != 0) {
 				section = Section.getSectionBySectionId(section_id);
 			}
 			else {
-				section.setCourse_id(course_id);
-				section.setCourse_id(course_id);
 				section.setSection_id(section_id);
 				section.setSection_name("课程总结");
-				section.setSection_weight(-1);
 			}
 		}
+		else if (req.getParameter("section.section_name") != null) {
+			section.setSection_id(INVAILD);
+			section.setSection_name(req.getParameter("section.section_name"));
+		}
 		else {
-			section.setCourse_id(course_id);
 			section.setSection_id(section_id);
 			section.setSection_name("null");
-			section.setSection_weight(-1);
 		}
 		
 //		get event info
@@ -191,6 +192,7 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 //		get knowledgeweight
 		KnowledgeWeight kw = KnowledgeWeight.getInstance();
 		kw.setSection_id(section_id);
+		kw.setKnowledgeweight_id(INVAILD);
 		kw.setListening_weight(INVAILD);
 		kw.setAnswer_weight(INVAILD);
 		kw.setAttendance_weight(INVAILD);
@@ -237,34 +239,49 @@ public class TeacherLogFilter extends LogFilter implements Filter {
 			String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 			Calendar nowtime = DateFormator.getDateByPattern(datetime);
 			req.setCharacterEncoding("utf-8");
-			Log log = createLog(nowtime, hreq);
-			if (log.getBbs().getReply_id() != -1 && log.getBbs().getReply_id() != INVAILD)
-				subaction = "replybbs";
-			
-			boolean show = true;
-			String propertiespath = (TeacherLogFilter.class.getResource("") + "teacherlog.properties").substring(5);
-			String actioninchinese = FileFunc.readFromPropertiesFile(propertiespath, subaction);
-			if (actioninchinese == "")
-				show = false;
-			else
-				log.setAction(actioninchinese);
-			
-			
-			System.out.println("action: " + action + " subaction: " + subaction);
-			chain.doFilter(req, res);
-			
-			if (subaction.equals("updateknowledgeweight"))
-				log.setKw(KnowledgeWeight.getKnowledgeWeightBySectionId(log.getSection().getSection_id()));
-			
-			if (show) {
-				log.show();
-				String path = hreq.getServletContext().getRealPath(savepath);
-//				System.out.println("path: " + path);
-				if (!FileFunc.directoryExist(path))
-					FileFunc.createDirectory(path);
-//				Log.saveLog(path, log, "teacher");
+			boolean status = true;
+			Log log = Log.getInstance();
+			if (req.getParameter("teacher.loginname") != null && req.getParameter("teacher.password") != null) {
+				String loginname = req.getParameter("teacher.loginname");
+				String password = req.getParameter("teacher.password");
+				if (!Teacher.check(loginname, password))
+					status = false;
 			}
-			System.out.println("##########End##########\n");
+			if (status) {
+				log = createLog(nowtime, hreq);
+				if (log.getBbs().getReply_id() != -1 && log.getBbs().getReply_id() != INVAILD)
+					subaction = "replybbs";
+				else if (subaction.equals("getsectionsummary") && log.getSection().getSection_id() == 0)
+					subaction = "getcoursesummary";
+				
+				boolean show = true;
+				String propertiespath = (TeacherLogFilter.class.getResource("") + "teacherlog.properties").substring(5);
+				String actioninchinese = FileFunc.readFromPropertiesFile(propertiespath, subaction);
+				if (actioninchinese == "")
+					show = false;
+				else
+					log.setAction(actioninchinese);
+				
+				
+				System.out.println("action: " + action + " subaction: " + subaction);
+				chain.doFilter(req, res);
+				
+				if (subaction.equals("updateknowledgeweight"))
+					log.setKw(KnowledgeWeight.getKnowledgeWeightBySectionId(log.getSection().getSection_id()));
+				
+				if (show) {
+					log.show();
+					String path = hreq.getServletContext().getRealPath(savepath);
+	//				System.out.println("path: " + path);
+					if (!FileFunc.directoryExist(path))
+						FileFunc.createDirectory(path);
+	//				Log.saveLog(path, log, "teacher");
+				}
+				System.out.println("##########End##########\n");
+			}
+			else {
+				chain.doFilter(req, res);
+			}
 		}
 		else {
 			chain.doFilter(req, res);

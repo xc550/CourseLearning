@@ -70,7 +70,7 @@
 								for (int i = 0; i < scorearray.size(); i++) {
 									ArrayList<SectionScore> studentscore = scorearray.get(i).getSectionscore();
 									Student student = Student.getStudentByStudentId(scorearray.get(i).getStudent_id());
-									double sum = new BigDecimal(scorearray.get(i).getAverage()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+									double sum = scorearray.get(i).getAverage();
 						%>
 							<tr>
 								<td><%=student.getName() %></td>
@@ -96,6 +96,8 @@
 					<%
 						if (section_id != 0) {
 							double average = ((BigDecimal)request.getAttribute("average")).doubleValue();
+							double max = ((BigDecimal)request.getAttribute("max")).doubleValue();
+							double min = ((BigDecimal)request.getAttribute("min")).doubleValue();
 							ArrayList<String> maxscore = (ArrayList<String>)request.getAttribute("maxscore");
 							ArrayList<String> minscore = (ArrayList<String>)request.getAttribute("minscore");
 							ArrayList<String> higher = (ArrayList<String>)request.getAttribute("higher");
@@ -105,37 +107,53 @@
 						<p><strong>平均分：</strong><%=average %></p>
 						<p><strong>最高分：</strong></p>
 						<p>
+						<%=max %>：
 						<% for (int i = 0; i < maxscore.size(); i++) { %>
 							<%=maxscore.get(i) %>
 						<% } %>
 						</p>
 						<p><strong>最低分：</strong></p>
 						<p>
+						<%=min %>：
 						<% for (int i = 0; i < minscore.size(); i++) { %>
 							<%=minscore.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>高于平均分：</strong></p>
-						<p>
-						<% for (int i = 0; i < higher.size(); i++) { %>
-							<%=higher.get(i)%>
+						<% if (higher.size() > 0) { %>
+							<p>
+							<% for (int i = 0; i < higher.size(); i++) { %>
+								<%=higher.get(i)%>
+							<% } %>
+							</p>
+						<% } else { %>
+							<p>无</p>
 						<% } %>
-						</p>
 						<p><strong>低于平均分：</strong></p>
-						<p>
-						<% for (int i = 0; i < lower.size(); i++) { %>
-							<%=lower.get(i)%>
+						<% if (lower.size() > 0) { %>
+							<p>
+							<% for (int i = 0; i < lower.size(); i++) { %>
+								<%=lower.get(i)%>
+							<% } %>
+							</p>
+						<% } else { %>
+							<p>无</p>
 						<% } %>
-						</p>
 						<p><strong>怀疑作弊的：</strong></p>
-						<p>
-						<% for (int i = 0; i < cheating.size(); i++) { %>
-							<%=cheating.get(i)%>
+						<% if (cheating.size() > 0) { %>
+							<p>
+							<% for (int i = 0; i < cheating.size(); i++) { %>
+								<%=cheating.get(i)%>
+							<% } %>
+							</p>
+						<% } else { %>
+							<p>无</p>
 						<% } %>
-						</p>
 					<%
 						} else {
 							double average = ((BigDecimal)request.getAttribute("average")).doubleValue();
+							double max = ((BigDecimal)request.getAttribute("max")).doubleValue();
+							double min = ((BigDecimal)request.getAttribute("min")).doubleValue();
 							ArrayList<String> maxscore = (ArrayList<String>)request.getAttribute("maxscore");
 							ArrayList<String> minscore = (ArrayList<String>)request.getAttribute("minscore");
 							ArrayList<String> higher = (ArrayList<String>)request.getAttribute("higher");
@@ -146,66 +164,91 @@
 						<p><strong>平均分：</strong><%=average %></p>
 						<p><strong>最高分：</strong></p>
 						<p>
+						<%=max %>:
 						<% for (int i = 0; i < maxscore.size(); i++) { %>
-							<%=maxscore.get(i)%>
+							<%=maxscore.get(i) %>
 						<% } %>
 						</p>
 						<p><strong>最低分：</strong></p>
 						<p>
+						<%=min %>:
 						<% for (int i = 0; i < minscore.size(); i++) { %>
 							<%=minscore.get(i)%>
 						<% } %>
 						</p>
 						<p><strong>高于平均分：</strong></p>
-						<p>
-						<% for (int i = 0; i < higher.size(); i++) { %>
-							<%=higher.get(i)%>
+						<% if (higher.size() > 0) { %>
+							<p>
+							<% for (int i = 0; i < higher.size(); i++) { %>
+								<%=higher.get(i)%>
+							<% } %>
+							</p>
+						<% } else { %>
+							<p>无</p>
 						<% } %>
-						</p>
 						<p><strong>低于平均分及其问题单元：</strong></p>
 						<%
-							boolean isNumb = true;
-							for (int i = 0, size = 0; i < lower.size(); i++) { 
-								if (isNumb) {
-									size = new Integer(lower.get(i++)).intValue();
-									String student_name = lower.get(i);
-									isNumb = false;
+							if (lower.size() > 0) {
+								boolean isNumb = true;
+								for (int i = 0, size = 0; i < lower.size(); i++) { 
+									if (isNumb) {
+										size = new Integer(lower.get(i++)).intValue();
+										String student_name = lower.get(i);
+										isNumb = false;
 						%>
 							<p><%=student_name%>：</p> 
-						<%
-								}
-								else {
-						%>
-							<p>
-						<%
-									for (int j = 0; j < size; j++, i++) {
-										String prob_name = lower.get(i);
-						%>
-							<%=prob_name%>
-						<%
+							<%
 									}
-						%>
+									else {
+							%>
+							<p>
+							<%
+										for (int j = 0; j < size; j++, i++) {
+											String prob_name = lower.get(i);
+							%>
+								<%=prob_name%>
+							<%
+										}
+							%>
 							</p>
 						<%
+									}
 								}
-							}
+							} else {
 						%>
-						<p><strong>怀疑作弊的：</strong></p>
+							<p>无</p>
+						<% } %>
+						<p><strong>怀疑作弊最多的：</strong></p>
 						<%
-							for (int i = 0; i < cheating.size(); i += 2) {
-								String student_name = cheating.get(i);
-								int times = new Integer(cheating.get(i + 1)).intValue();
+							if (cheating.size() > 0) {
+								int times = new Integer(cheating.get(0)).intValue();
 						%>
-							<p><%=student_name %>: <%=times %>次</p>
+							<p>以下同学均怀疑作弊<%=times %>次</p>
+						<%
+								for (int i = 1; i < cheating.size(); i++) {
+									String student_name = cheating.get(i);
+						%>
+							<p><%=student_name %></p>
+						<% 
+								}
+							} else {
+						%>
+							<p>无</p>
 						<% } %>
 						<p><strong>难点：</strong></p>
 						<%
-							for (int i = 0; i < coreprob.size(); i++) {
-								String coreprob_name = coreprob.get(i);
+							if (coreprob.size() > 0) {
+								for (int i = 0; i < coreprob.size(); i++) {
+									String coreprob_name = coreprob.get(i);
 						%>
 							<p><%=coreprob_name %></p>
-						<% } %>
+						<% 
+								}
+							} else {
+						%>
+							<p>无</p>
 					<%
+							}
 						}
 					%>
 				</div>

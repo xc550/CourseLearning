@@ -58,6 +58,7 @@ public class WeightAction extends ActionSupport {
 				columns.add(Columns[i]);
 			act.put("columns", columns);
 			act.put("weightlist", kw);
+			act.getSession().remove("event_id");
 		}
 		else {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
@@ -68,6 +69,7 @@ public class WeightAction extends ActionSupport {
 				columns.add(Section.getSectionBySectionId(res.get(i).getSection_id()).getSection_name());
 			act.put("columns", columns);
 			act.getSession().put("weightlist", res);
+			act.getSession().remove("section_id");
 		}
 		return SUCCESS;
 	}

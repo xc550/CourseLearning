@@ -59,7 +59,6 @@
 		</action>
 	</package>
 	
-	
 	<package name="teacher" extends="struts-default,jfreechart-default">
 		<action name="teacher_login" class="com.cl.action.TeacherAction"
 			method="login">

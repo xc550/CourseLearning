@@ -10,7 +10,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Homework</title>
-<link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">  
+	<script type="text/javascript" src="public/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="public/bower_components/moment/min/moment.min.js"></script>
+	<script type="text/javascript" src="public/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="public/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+	<link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="public/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+	<script type="text/javascript">
+	$(function () {	  
+		$('#inputHomeworkStartTime').datetimepicker({
+			format: 'YYYY-MM-DD HH:mm:ss'
+		});
+		$('#inputHomeworkEndTime').datetimepicker({
+			format: 'YYYY-MM-DD HH:mm:ss'
+		});
+	});
+	</script>  
 </head>
 <body>
 	<div class="container">
@@ -43,8 +58,8 @@
 											aria-controls="collapsehomework<%=hw.getHomework_id() %>">
 											<%=hw.getHomework_title() %>
 										</a>
-										开始时间:<%=DateFormator.getDateCalendarToString(hw.getHomework_starttime()) %>
-										结束时间:<%=DateFormator.getDateCalendarToString(hw.getHomework_endtime()) %>
+										开始时间:<%=hw.getHomework_starttime() %>
+										结束时间:<%=hw.getHomework_endtime() %>
 										<a href="teacher_deletehomework?homework_id=<%=hw.getHomework_id()%>">
 											<span class="glyphicon glyphicon-remove"></span>
 										</a>
@@ -107,15 +122,25 @@
 						</div>
 						<div class="form-group">
 							<label for="inputHomeworkStartTime">开始时间</label>
-							<input type="text" name="homework.homework_starttime" onclick="setday(this)" class="form-control" id="inputHomeworkStartTime"/>
+							<div id="inputHomeworkStartTime" class="input-group date">
+								<input type="text" class="form-control" name="homework.homework_starttime" />
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputHomeworkEndTime">结束时间</label>
-							<input type="text" name="homework.homework_endtime" onclick="setday(this)" class="form-control" id="inputHomeworkEndTime"/>
+							<div id="inputHomeworkEndTime" class="input-group date">
+								<input type="text" class="form-control" name="homework.homework_endtime" />
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputHomeworkAccessory">提交附件</label>
-							<s:file name="upload" label="Select File" id="inputHomeworkAccessory"></s:file>
+							<s:file name="upload" id="inputHomeworkAccessory"></s:file>
 						</div>
 						<button class="btn btn-success btn-sm" type="submit">提交</button>
 					</form>
@@ -123,7 +148,5 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="public/bower_components/jquery/jquery.js"></script>
-	<script type="text/javascript" src="public/bower_components/bootstrap/js/collapse.js"></script>
 </body>
 </html>

@@ -39,7 +39,7 @@
 
 	<!-- 配置mapper接口映射的自动扫描 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.zsrt.crm.*.dao" />
+		<property name="basePackage" value="com.cl.*.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sessionFactory" />
 	</bean>
 
@@ -58,7 +58,7 @@
 	<!-- 配置AOP 设置切入点 -->
 	<aop:config>
 		<aop:advisor advice-ref="txadvice"
-			pointcut="execution(* com.zsrt.crm.*.service.*.*(..))" />
+			pointcut="execution(* com.cl.*.service.*.*(..))" />
 	</aop:config>
 
 </beans>

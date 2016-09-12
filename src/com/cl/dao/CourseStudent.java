@@ -13,13 +13,30 @@ public class CourseStudent extends CourseHead {
 		return new CourseStudent();
 	}
 	
+	public static ArrayList<Student> getStudentListByCourseIdAndClassId(int course_id, int class_id) {
+		ArrayList<Student> stulist = new ArrayList<>();
+		Connection con = DBHelper.getConnection();
+		String sql = "select * from coursestudent where course_id=" + course_id + " and class_id=" + class_id + ";";
+		ResultSet rs = DBHelper.execQuery(con, sql);
+		try {
+			while (rs.next()) {
+				Student stu = Student.getStudentByStudentId(rs.getInt("student_id"));
+				stulist.add(stu);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		DBHelper.closeConnection(con);
+		return stulist;
+	}
+	
 	public static CourseStudent getCourseStudentByCourseIdAndStudentId(int course_id, int student_id) {
 		String sql = "select * from coursestudent where course_id=" + course_id + " and student_id=" + student_id + ";";
 		CourseStudent res = null;
 		Connection con = DBHelper.getConnection();
 		ResultSet rs = DBHelper.execQuery(con, sql);
 		try {
-			while (rs.next()) {
+			if (rs.next()) {
 				res = new CourseStudent();
 				int class_id = rs.getInt("class_id");
 				int coursestudent_id = rs.getInt("coursestudent_id");

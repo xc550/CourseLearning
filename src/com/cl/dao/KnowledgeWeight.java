@@ -17,6 +17,20 @@ public class KnowledgeWeight {
 	private double reviewandpreview_weight;
 	
 //	未区分不同老师所设置的权值
+	public KnowledgeWeight() {
+		
+	}
+	
+	public KnowledgeWeight(int id, double a, double b, double c, double d, double e, double f) {
+		section_id = id;
+		listening_weight = a;
+		answer_weight = b;
+		attendance_weight = c;
+		homework_weight = d;
+		experiment_weight = e;
+		reviewandpreview_weight = f;
+	}
+	
 	public int getKnowledgeweight_id() {
 		return knowledgeweight_id;
 	}

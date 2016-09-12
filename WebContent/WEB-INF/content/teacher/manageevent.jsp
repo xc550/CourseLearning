@@ -10,8 +10,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>AddEvent</title>
-<link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
-</head>
+	<script type="text/javascript" src="public/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="public/bower_components/moment/min/moment.min.js"></script>
+	<script type="text/javascript" src="public/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="public/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+	<link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="public/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+	<script type="text/javascript">
+	$(function () {	  
+		$('#inputEventEndTime').datetimepicker({
+			format: 'YYYY-MM-DD HH:mm:ss'
+		});
+	});
+	</script></head>
 <body>
 	<div class="container">
 		<div class="row">
@@ -50,8 +61,8 @@
 									<td><%=i + 1 %></td>
 									<td><%=e.getEvent_content() %></td>
 									<td><%=e.getEvent_type() %></td>
-									<td><%=DateFormator.getDateCalendarToString(e.getStarttime()) %></td>
-									<td><%=DateFormator.getDateCalendarToString(e.getEndtime()) %></td>
+									<td><%=e.getStarttime() %></td>
+									<td><%=e.getEndtime() %></td>
 									<td>
 										<a href="teacher_deleteevent?event_id=<%=e.getEvent_id()%>">
 											<span class="glyphicon glyphicon-remove"></span>
@@ -66,26 +77,45 @@
 				<div class="row">
 					<h2>添加事件</h2>
 					<form action="teacher_addevent" method="post">
-						<table class="table">
-							<thead>
-								<tr>
-									<td>章节名称</td>
-									<td>事件名称</td>
-									<td>事件类型</td>
-									<td>事件截止时间</td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><%=section_name %></td>
-									<td><input name="event.event_content" type="text"></td>
-									<td><input name="event.event_type" type="text"></td>
-									<!-- <td><input name="event.endtime" onclick="setday(this)" maxlength="60"></td> -->
-									<td><input type="datetime-local" name="event.endtime" maxlength="60"></td>
-								</tr>
-							</tbody>
-						</table>
-						<button type="submit" class="btn btn-success">发布</button>
+						<div class="row">
+							<div class="col-md-7">
+								<div class="form-group">
+									<label for="inputSectionName">章节名称</label>
+									<p><%=section_name %></p>
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="form-group">
+									<label for="inputEventContent">事件名称</label>
+									<input type="text" name="event.event_content" class="form-control" id="inputEventContent">
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="form-group">
+									<label for="inputEventType">事件类型</label>
+									<select name="event.event_type" class="form-control" id="inputEventType">
+										<option value="听课">听课</option>
+										<option value="讨论">讨论</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="form-group">
+									<label for="inputEventType">事件截止时间</label>
+									<div id="inputEventEndTime" class="input-group date">
+										<input type="text" class="form-control" name="event.endtime" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-success">发布</button>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>

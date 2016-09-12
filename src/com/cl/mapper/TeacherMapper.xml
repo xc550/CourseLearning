@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cl.dao.TeacherDao">
+	<update id="createTable">
+		create table if not exist teacher(
+			teacher_id int(5) auto_increment,
+			loginname varchar(255),
+			password varchar(255),
+			name varchar(255),
+			primary key(teacher_id) 
+		)
+	</update>
+	
+	<select id="check" parameterType="Teacher">
+		select * from teacher 
+		<where>
+			loginname=#{loginname} and password=#{password};
+		</where>
+	</select>
+	
+	<select id="getTeacherByLoginname" parameterType="Teacher">
+		select * from teacher 
+		<where>
+			loginname=#{loginname}
+		</where>
+	</select>
+	
+	<select id="getTeacherByTeacherId" parameterType="Teacher">
+		select * from teacher
+		<where>
+			teacher_id=#{teacher_id}
+		</where>
+	</select>
+	
+	<select id="getTeacherList" parameterType="Teacher">
+		select * from teacher
+	</select>
+	
+	<insert id="addTeacher" parameterType="Teacher">
+		insert into teacher(loginname, password, name)
+			values(#{loginname}, #{password}, #{name})
+	</insert>
+	
+	<update id="deleteTeacherByTeacherId">
+		delete from teacher
+		<where>
+			teacher_id=#{teacher_id}
+		</where>
+	</update>
+	
+	<update id="deleteTeacherByTeacherLoginname">
+		delete from teacher 
+		<where>
+			loginname=#{loginname}
+		</where>
+	</update>
+</mapper>

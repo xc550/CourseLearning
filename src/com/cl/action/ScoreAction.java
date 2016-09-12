@@ -6,8 +6,10 @@ import java.util.Comparator;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.cl.dao.CourseStudent;
 import com.cl.dao.Section;
 import com.cl.dao.SectionScore;
+import com.cl.dao.Student;
 import com.cl.util.SectionCalc;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,12 +29,60 @@ public class ScoreAction extends ActionSupport {
 	public String getScore() throws Exception {
 		ActionContext act = ActionContext.getContext();
 		int section_id = ((Integer)act.getSession().get("section_id")).intValue();
+		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
+		int class_id = ((Integer)act.getSession().get("class_id")).intValue();
+		
 		ArrayList<String> columns = new ArrayList<>();
 		for (int i = 0; i < SectionColumns.length; i++)
 			columns.add(SectionColumns[i]);
 		SectionCalc sectioncalc = new SectionCalc(section_id);
-		ArrayList<SectionScore> res = sectioncalc.getSource();
 		String section_name = Section.getSectionBySectionId(section_id).getSection_name();
+		ArrayList<Student> stulist = CourseStudent.getStudentListByCourseIdAndClassId(course_id, class_id);
+		ArrayList<SectionScore> res = sectioncalc.getSource();
+		
+		stulist.sort(new Comparator<Student>() {
+			public int compare(Student a, Student b) {
+				return a.getId() - b.getId();
+			}
+		});
+		
+		res.sort(new Comparator<SectionScore>() {
+			public int compare(SectionScore a, SectionScore b) {
+				return a.getStudent_id() - b.getStudent_id();
+			}
+		});
+		
+		for (int i = 0, j = 0; i < stulist.size() && j < res.size();) {
+			if (stulist.get(i).getId() == res.get(j).getStudent_id()) {
+				stulist.remove(i);
+				j++;
+			}
+			else if (stulist.get(i).getId() < res.get(j).getStudent_id()) {
+				i++;
+			}
+			else {
+				System.out.println("Error: Found student " + res.get(j).getStudent_id() + " is scored but not in coursestudent");
+				j++;
+			}
+		}
+		
+		ArrayList<SectionScore> add = new ArrayList<>();
+		for (int i = 0; i < stulist.size(); i++) {
+			SectionScore e = new SectionScore();
+			e.setAnswer(-1);
+			e.setAttendance(-1);
+			e.setExperiment(-1);
+			e.setHomework(-1);
+			e.setListening(-1);
+			e.setReviewandpreview(-1);
+			e.setSection_id(section_id);
+			e.setSum(-1);
+			e.setStudent_id(stulist.get(i).getId());
+			add.add(e);
+		}
+		
+		SectionScore.addSectionScoreList(add);
+		res.addAll(add);
 		
 		for (int i = 0; i < res.size(); i++) {
 			res.get(i).setListening(new BigDecimal(res.get(i).getListening()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -46,6 +96,7 @@ public class ScoreAction extends ActionSupport {
 		act.put("section_name", section_name);
 		act.put("sectioncolumns", columns);
 		act.put("scorearray", res);
+		act.getSession().remove("event_id");
 		return SUCCESS;
 	}
 	

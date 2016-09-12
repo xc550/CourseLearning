@@ -33,8 +33,9 @@ public class BBSAction extends ActionSupport {
 		else if (role.equals("teacher"))
 			teacher_id = Teacher.getTeacherByLoginname(loginname).getId();
 		
-		int event_id = ((Integer)act.getSession().get("event_id")).intValue();
+		
 		int class_id = ((Integer)act.getSession().get("class_id")).intValue();
+		int event_id = ((Integer)act.getSession().get("event_id")).intValue();
 		int reply_id = new Integer(ServletActionContext.getRequest().getParameter("reply_id")).intValue();
 			
 		

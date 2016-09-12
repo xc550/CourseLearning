@@ -159,9 +159,9 @@ public class Log {
 		+ "\nMethod:\t" + this.getLs().getMethod() + "\nBBSContent:\t" + this.getBbs().getBbs_content() 
 		+ "\nHomeworkId:\t" + this.getHw().getHomework_id() + "\nHomeworkTitle:\t" + this.getHw().getHomework_title() 
 		+ "\nHomeworkContent:\t" + this.getHw().getHomework_content() 
-		+ "\nHomeworkAccessory:\t" + this.getHw().getHomework_accessory() 
-		+ "\nStudentHomeworkComment:\t" + this.getHws().getHomeworkstudent_comment() 
-		+ "\nStudentHomeworkAccessory:\t" + this.getHws().getHomeworkstudent_accessory() 
+		+ "\nHomeworkAccessory:\t" + this.getHw().getHomework_accessory()
+		+ "\nHomeworkStudentComment:\t" + this.getHws().getHomeworkstudent_comment() 
+		+ "\nHomeworkStudentAccessory:\t" + this.getHws().getHomeworkstudent_accessory() 
 		+ "\nKnowledgeWeightId:\t" + this.getKw().getKnowledgeweight_id() + "\nListeningWeight:\t" + this.getKw().getListening_weight()
 		+ "\nAnswerWeight:\t" + this.getKw().getAnswer_weight() + "\nAttendanceWeight:\t" + this.getKw().getAnswer_weight()
 		+ "\nHomeworkWeight:\t" + this.getKw().getHomework_weight() + "\nExperimentWeight:\t" + this.getKw().getExperiment_weight()
@@ -173,14 +173,29 @@ public class Log {
 		System.out.println(this.toString());
 	}
 	
+	public static Log getInstance() {
+		return new Log();
+	}
+	
 	public static void saveLog(Log log, String role) {
 		Connection con = DBHelper.getConnection();
-		if (role.equals("student")) {
-			
-		}
-		else if (role.equals("teacher")) {
-			
-		}
+		String sql = "insert into " + role + "log(user_id, user_name, user_gender, time, action, course_id, class_id, course_name, "
+				+ "section_id, section_name, event_id, event_content, event_type, classtime, inclass, outclass, "
+				+ "method, bbs_content, homework_id, homework_title, homework_content, homework_accessory, "
+				+ "homeworkstudent_comment, homeworkstudent_accessory, knowledgeweight_id, listening_weight, "
+				+ "answer_weight, attendance_weight, homework_weight, experiment_weight, reviewandpreview_weight) values("
+				+ log.getUser_id() + ", '" + log.getUser_name() + "', '" + log.getUser_gender() + "', '" 
+				+ DateFormator.getDateCalendarToString(log.getTime()) + "', '" + log.getAction() + "', " + log.getCourse().getCourse_id()
+				+ ", " + log.getClass_id() + ", '" + log.getCourse().getCourse_name() + "', " + log.getSection().getSection_id()
+				+ ", '" + log.getSection().getSection_name() + "', " + log.getEvent().getEvent_id() + ", '" + log.getEvent().getEvent_content()
+				+ "', '" + log.getEvent().getEvent_type() + "', " + log.getLs().getClasstime() + ", " + log.getLs().getInclass() 
+				+ ", " + log.getLs().getOutclass() + ", '" + log.getLs().getMethod() + "', '" + log.getBbs().getBbs_content() 
+				+ "', " + log.getHw().getHomework_id() + ", '" + log.getHw().getHomework_title() + "', '" + log.getHw().getHomework_content() 
+				+ "', '" + log.getHw().getHomework_accessory() + ", '" + log.getHws().getHomeworkstudent_comment() 
+				+ "', '" + log.getHws().getHomeworkstudent_accessory() + "', " + log.getKw().getKnowledgeweight_id()
+				+ ", " + log.getKw().getListening_weight() + ", " + log.getKw().getAnswer_weight() + ", " + log.getKw().getAttendance_weight()
+				+ ", " + log.getKw().getHomework_weight() + ", " + log.getKw().getExperiment_weight() + ", " + log.getKw().getReviewandpreview_weight() + ");";
+		DBHelper.execUpdate(con, sql);
 		DBHelper.closeConnection(con);
 	}
 	

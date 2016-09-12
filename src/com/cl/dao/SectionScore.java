@@ -140,6 +140,10 @@ public class SectionScore {
 				sectionscore.setReviewandpreview(reviewandpreview);
 				
 				KnowledgeWeight sectionweight = KnowledgeWeight.getKnowledgeWeightBySectionId(section_id);
+				if (sectionweight == null) {
+					sectionweight = new KnowledgeWeight(section_id,  0.18, 0.24, 0.18, 0.12, 0.2, 0.08);
+					KnowledgeWeight.addKnowledgeWeight(sectionweight);
+				}
 				double sum = sectionscore.getListening() * sectionweight.getListening_weight()
 						+ sectionscore.getAnswer() * sectionweight.getAnswer_weight()
 						+ sectionscore.getAttendance() * sectionweight.getAttendance_weight()
@@ -198,6 +202,19 @@ public class SectionScore {
 		}
 		DBHelper.closeConnection(con);
 		return res;
+	}
+	
+	public static void addSectionScoreList(ArrayList<SectionScore> add) {
+		Connection con = DBHelper.getConnection();
+		for (int i = 0; i < add.size(); i++) {
+			String sql = "insert into sectionscore(section_id, student_id, listening, answer, attendance, "
+					+ "homework, experiment, reviewandpreview) values(" + add.get(i).getSection_id() + ", "  
+					+ add.get(i).getStudent_id() + ", " + add.get(i).getListening() + ", " 
+					+ add.get(i).getAnswer() + ", " + add.get(i).getAttendance() + ", " + add.get(i).getHomework()
+					+ ", " + add.get(i).getExperiment() + ", " + add.get(i).getReviewandpreview() + ");";
+			DBHelper.execUpdate(con, sql);
+		}
+		DBHelper.closeConnection(con);
 	}
 	
 	public static void updateSectionScoreList(SectionScore ss) {

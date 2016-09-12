@@ -16,8 +16,8 @@ public class Homework {
 	private int section_id;
 	private String homework_title;
 	private String homework_content;
-	private Calendar homework_starttime;
-	private Calendar homework_endtime;
+	private String homework_starttime;
+	private String homework_endtime;
 	private String homework_accessory;
 	
 	public int getHomework_id() {
@@ -68,19 +68,19 @@ public class Homework {
 		this.homework_content = homework_content;
 	}
 
-	public Calendar getHomework_starttime() {
+	public String getHomework_starttime() {
 		return homework_starttime;
 	}
 
-	public void setHomework_starttime(Calendar homework_starttime) {
+	public void setHomework_starttime(String homework_starttime) {
 		this.homework_starttime = homework_starttime;
 	}
 
-	public Calendar getHomework_endtime() {
+	public String getHomework_endtime() {
 		return homework_endtime;
 	}
 
-	public void setHomework_endtime(Calendar homework_endtime) {
+	public void setHomework_endtime(String homework_endtime) {
 		this.homework_endtime = homework_endtime;
 	}
 
@@ -109,8 +109,8 @@ public class Homework {
 				int section_id = rs.getInt("section_id");
 				String homework_title = rs.getString("homework_title");
 				String homework_content = rs.getString("homework_content");
-				Calendar homework_starttime = DateFormator.getDateByPattern(rs.getString("homework_starttime"));
-				Calendar homework_endtime = DateFormator.getDateByPattern(rs.getString("homework_endtime"));
+				String homework_starttime = rs.getString("homework_starttime");
+				String homework_endtime = rs.getString("homework_endtime");
 				String homework_accessory = rs.getString("homework_accessory");
 				
 				hw.setHomework_id(homework_id);
@@ -142,8 +142,8 @@ public class Homework {
 				int section_id = rs.getInt("section_id");
 				String homework_title = rs.getString("homework_title");
 				String homework_content = rs.getString("homework_content");
-				Calendar homework_starttime = DateFormator.getDateByPattern(rs.getString("homework_starttime"));
-				Calendar homework_endtime = DateFormator.getDateByPattern(rs.getString("homework_endtime"));
+				String homework_starttime = rs.getString("homework_starttime");
+				String homework_endtime = rs.getString("homework_endtime");
 				String homework_accessory = rs.getString("homework_accessory");
 				
 				homework.setHomework_id(homework_id);
@@ -168,8 +168,7 @@ public class Homework {
 		String sql = "insert into homework(course_id, class_id, section_id, homework_title, homework_content, homework_starttime"
 				+ ", homework_endtime, homework_accessory) values(" + homework.getCourse_id() + ", " + homework.getClass_id()
 				+ ", " + homework.getSection_id() + ", '" + homework.getHomework_title() + "', '" + homework.getHomework_content() 
-				+ "', '" + DateFormator.getDateCalendarToString(homework.getHomework_starttime()) + "', '"
-				+ DateFormator.getDateCalendarToString(homework.getHomework_endtime()) + "'";
+				+ "', '" + homework.getHomework_starttime() + "', '" + homework.getHomework_endtime() + "'";
 		if (homework.getHomework_accessory() == null)
 			sql = sql + ", null);";
 		else
@@ -182,8 +181,8 @@ public class Homework {
 	public static void updateHomework(Homework homework) {
 		String sql = "update homework set course_id=" + homework.getCourse_id() + ", class_id=" + homework.getClass_id() + ", section_id=" 
 				+ homework.getSection_id() + ", homework_title='" + homework.getHomework_title() + "', homework_content='"
-				+ homework.getHomework_content() + "', homework_starttime='" + DateFormator.getDateCalendarToString(homework.getHomework_starttime())
-				+ "', homework_endtime='" + DateFormator.getDateCalendarToString(homework.getHomework_endtime()) + "', homework_accessory='"
+				+ homework.getHomework_content() + "', homework_starttime='" + homework.getHomework_starttime()
+				+ "', homework_endtime='" + homework.getHomework_endtime() + "', homework_accessory='"
 				+ homework.getHomework_accessory() + "' where homework_id=" + homework.getHomework_id() + ";";
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);

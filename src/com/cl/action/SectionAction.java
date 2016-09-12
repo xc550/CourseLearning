@@ -78,7 +78,7 @@ public class SectionAction extends ActionSupport {
 		ActionContext act = ActionContext.getContext();
 		int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 		Section sec = getSection();
-		System.out.println(sec.getSection_name());
+//		System.out.println(sec.getSection_name());
 		sec.setCourse_id(course_id);
 		sec.setSection_weight(0);
 		Section.addSection(sec);
@@ -124,7 +124,6 @@ public class SectionAction extends ActionSupport {
 			int course_id = ((Integer)act.getSession().get("course_id")).intValue();
 			ArrayList<Section> section = Section.getSectionListByCourseId(course_id);
 			ArrayList<String> columns = new ArrayList<>();
-			columns.add("学号");
 			columns.add("姓名");
 			for (int i = 0; i < section.size(); i++)
 				columns.add(section.get(i).getSection_name());
@@ -133,7 +132,6 @@ public class SectionAction extends ActionSupport {
 			CourseCalc coursecalc = new CourseCalc(course_id);
 			ArrayList<CourseScore> res = coursecalc.getSource();
 			for (int i = 0; i < res.size(); i++) {
-				System.out.println(res.get(i).getSectionscore().size());
 				for (int j = 0; j < res.get(i).getSectionscore().size(); j++) {
 					res.get(i).getSectionscore().get(j).setSum(new BigDecimal(res.get(i).getSectionscore().get(j).getSum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				}

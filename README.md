@@ -2,7 +2,11 @@
 
 基于JavaWeb的网站系统
 
-现使用技术：springmvc + mybatis
+前端：jsp + bootstrap + jquery
+
+后台：springmvc + mybatis
+
+服务器：tomcat7
 
 ## 说明
 #### (1) 作业附件缓存目录存储格式说明：
@@ -16,6 +20,11 @@
 #### (3) 方法附近缓存目录存储格式说明：
 /WEB-INF/method/[method\_name]
 
-## Bug List
+## Task List
 
-1. 课程总结中的作弊未完成
+1. ~~课程总结中的作弊未完成~~
+2. ~~添加新章节，新章节无法对学生评分~~
+3. ~~事件时间、作业时间输入有误~~
+4. 添加作业无法获取日志
+5. 前端界面需要调整
+6. SpringMVC + Mybatis 整合
