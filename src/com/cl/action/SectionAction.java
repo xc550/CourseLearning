@@ -2,6 +2,7 @@ package com.cl.action;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -188,17 +189,39 @@ public class SectionAction extends ActionSupport {
 			
 			ArrayList<SectionScore> tmp = SectionScore.getSectionScoreListByStudentIdAndCourseId(student_id, course_id);
 			ArrayList<CourseScore> res = new ArrayList<>();
+			
+			section.sort(new Comparator<Section>() {
+				public int compare(Section a, Section b) {
+					return a.getSection_id() - b.getSection_id();
+				}
+			});
+			tmp.sort(new Comparator<SectionScore>() {
+				public int compare(SectionScore a, SectionScore b) {
+					return a.getSection_id() - b.getSection_id();
+				}
+			});
+			
+			for (int i = 0; i < section.size(); i++) {
+				int id = section.get(i).getSection_id(), j;
+				for (j = 0; j < tmp.size(); j++) {
+					if (tmp.get(j).getSection_id() == id) {
+						break;
+					}
+				}
+				if (j == tmp.size()) {
+					SectionScore e = new SectionScore();
+					e.setSection_id(id);
+					e.setSum(-1);
+					e.setStudent_id(student_id);
+					tmp.add(e);
+				}
+			}
+			
 			CourseScore e = new CourseScore();
 			e.setCourse_id(course_id);
 			e.setStudent_id(student_id);
 			e.setSectionscore(tmp);
 			res.add(e);
-			
-			for (int i = 0;  i < res.size(); i++) {
-				for (int j = 0; j < res.get(i).getSectionscore().size(); j++) {
-					res.get(i).getSectionscore().get(j).setSum(new BigDecimal(res.get(i).getSectionscore().get(j).getSum()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-				}
-			}
 			
 			act.put("sectioncolumns", columns);
 			act.put("scorearray", res);

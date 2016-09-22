@@ -18,6 +18,8 @@ public class LearningStatus {
 	private int inclass;
 	private int outclass;
 	private String method;
+	private final ArrayList<String> classtimeofstring = new ArrayList<>(); // {"较短", "正好", "较长"}
+	private final ArrayList<String> classofstring = new ArrayList<>();// {"理解", "模糊", "不懂"}
 	private static final String[] classtimetostring = {"较短", "正好", "较长"};
 	private static final String[] classtostring = {"理解", "模糊", "不懂"};
 	
@@ -84,13 +86,19 @@ public class LearningStatus {
 	public void setMethod(String method) {
 		this.method = method;
 	}
-	
-	public static String[] getClasstimetostring() {
-		return classtimetostring;
+
+	public ArrayList<String> getClasstimeofstring() {
+		classtimeofstring.clear();
+		for (int i = 0; i < classtimetostring.length; i++)
+			classtimeofstring.add(classtimetostring[i]);
+		return classtimeofstring;
 	}
 
-	public static String[] getClasstostring() {
-		return classtostring;
+	public ArrayList<String> getClasstostring() {
+		classofstring.clear();
+		for (int i = 0; i < classtostring.length; i++)
+			classofstring.add(classtostring[i]);
+		return classofstring;
 	}
 
 	public static String getClassTimeString(int classtime) {

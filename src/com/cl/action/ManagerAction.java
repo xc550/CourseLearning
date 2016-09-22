@@ -1,6 +1,9 @@
 package com.cl.action;
 
+import org.apache.struts2.ServletActionContext;
+
 import com.cl.dao.Manager;
+import com.cl.dao.Student;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -22,6 +25,7 @@ public class ManagerAction extends ActionSupport {
 			
 			act.getSession().put("username", username);
 			act.getSession().put("role", "manager");
+			act.getSession().put("realname", Manager.getManagerByLoginname(username).getName());
 			return SUCCESS;
 		}
 		return ERROR;

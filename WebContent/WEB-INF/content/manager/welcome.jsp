@@ -14,10 +14,10 @@
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-3 well">
 				<s:action name="sidebar_man_functionlist" executeResult="true"></s:action>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8 col-md-offset-1">
 				<p>管理员您好，左侧的功能可供使用</p>
 			</div>
 		</div>

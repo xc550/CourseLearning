@@ -32,6 +32,7 @@ public class TeacherAction extends ActionSupport {
 
 			act.getSession().put("username", username);
 			act.getSession().put("role", "teacher");
+			act.getSession().put("realname", Teacher.getTeacherByLoginname(username).getName());
 			return SUCCESS;
 		}
 		return ERROR;

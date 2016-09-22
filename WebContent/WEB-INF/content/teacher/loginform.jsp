@@ -9,10 +9,8 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
 		<div class="page-header">
 			<h1>学习分析管理系统 <small>V2.0</small></h1>
-		</div>
 		</div>
 		<div class="row">
 			<div class="col-md-5 col-md-offset-4">

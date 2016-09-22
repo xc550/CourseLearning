@@ -6,8 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SelectCourse</title>
@@ -19,7 +20,7 @@
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-3 well">
 				<s:action name="sidebar_stu_courselist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
@@ -31,6 +32,11 @@
 				<div class="row">
 					<h2>可选课程列表</h2>
 					<ul class="list-group">
+					<%-- <c:forEach items="${coursenotselected}" var="cns">
+						<li class="list-group-item">
+							<strong>${cns.course_name}</strong>
+						</li>
+					</c:forEach> --%>
 					<% 
 						for (int i = 0; i < courselistnotselected.size(); i++) {
 							int course_id = courselistnotselected.get(i).getCourse_id();

@@ -11,7 +11,7 @@ import com.cl.dao.Event;
 import com.cl.dao.LearningStatus;
 import com.cl.dao.Section;
 import com.cl.dao.Student;
-import com.cl.util.DateFormator;
+import com.cl.dao.Teacher;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -43,15 +43,44 @@ public class EventAction extends ActionSupport {
 		
 //		get student learning status
 		ArrayList<LearningStatus> ls = LearningStatus.getLearingStatusListByEventId(event_id);
+		ArrayList<Student> stu = new ArrayList<>();
+		for (int i = 0; i < ls.size(); i++) {
+			Student s = Student.getStudentByStudentId(ls.get(i).getStudent_id());
+			stu.add(s);
+		}
 		
 //		get student bbs
 		ArrayList<BBS> bbs = BBS.getBBSListByEventId(event_id);
+		
+		for (int i = 0; i < bbs.size(); i++) {
+			String username = "null";
+			if (bbs.get(i).getStudent_id() != -1)
+				username = Student.getStudentByStudentId(bbs.get(i).getStudent_id()).getName();
+			else if (bbs.get(i).getTeacher_id() != -1)
+				username = Teacher.getTeacherByTeacherId(bbs.get(i).getTeacher_id()).getName();
+			bbs.get(i).setUsername(username);
+			if (bbs.get(i).getReply_id() != -1) {
+//				回复bbs应只在该事件所有bbs之中
+				boolean found = false;
+				for (int j = 0; j < bbs.size(); j++) {
+					if (bbs.get(i).getReply_id() == bbs.get(j).getBbs_id()) {
+						bbs.get(i).setReply_id(j);
+						found = true;
+					}
+				}
+//				未找到回复对应的bbs，设置未回复
+				if (!found) {
+					bbs.get(i).setReply_id(-1);
+				}
+			}
+		}
 		
 		Event eve = Event.getEventByEventId(event_id);
 		
 		act.getSession().put("event_id", new Integer(event_id));
 		act.put("learningstatuscolumns", columns);
 		act.getSession().put("learningstatus", ls);
+		act.put("student", stu);
 		act.put("bbs", bbs);
 		act.put("event", eve);
 		return SUCCESS;

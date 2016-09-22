@@ -14,7 +14,7 @@
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-3 well">
 				<s:action name="sidebar_tea_sectionlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">

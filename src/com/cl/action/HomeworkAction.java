@@ -85,9 +85,19 @@ public class HomeworkAction extends ActionSupport {
 				return a.getSection_id() - b.getSection_id();
 			}
 		});
-		ArrayList<Section> sectionlist = Section.getSectionListByCourseId(course_id);
 		
-		act.put("sectionlist", sectionlist);
+		if (role.equals("student")) {
+			ArrayList<HomeworkStudent> homeworkstudent = new ArrayList<>();
+			for (int i = 0; i < homework.size(); i++) {
+				HomeworkStudent hws = HomeworkStudent.getHomeworkStudentByHomeworkIdAndStudentId(homework.get(i).getHomework_id(), user_id);
+				homeworkstudent.add(hws);
+			}
+			act.put("homeworkstudent", homeworkstudent);
+		}
+		else if (role.equals("teacher")) {
+			ArrayList<Section> sectionlist = Section.getSectionListByCourseId(course_id);
+			act.put("sectionlist", sectionlist); // for teacher
+		}
 		act.put("homeworklist", homework);
 		act.put("user_id", new Integer(user_id));
 		return SUCCESS;

@@ -45,7 +45,7 @@ public class BBSAction extends ActionSupport {
 		bbs.setEvent_id(event_id);
 		bbs.setReply_id(reply_id);
 		String datetime = (String) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-		bbs.setBbs_date(DateFormator.getDateByPattern(datetime));
+		bbs.setBbs_date(datetime);
 		BBS.addBBS(bbs);
 		return SUCCESS;
 	}

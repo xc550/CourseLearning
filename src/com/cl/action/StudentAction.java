@@ -28,6 +28,7 @@ public class StudentAction extends ActionSupport {
 			
 			act.getSession().put("username", username);
 			act.getSession().put("role", "student");
+			act.getSession().put("realname", Student.getStudentByLoginname(username).getName());
 			return SUCCESS;
 		}
 		return ERROR;

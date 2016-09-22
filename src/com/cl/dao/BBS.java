@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.cl.dbquery.DBHelper;
-import com.cl.util.DateFormator;
 
 public class BBS {
 	private int bbs_id;
@@ -15,8 +13,9 @@ public class BBS {
 	private int event_id;
 	private int student_id;
 	private int teacher_id;
+	private String username;
 	private String bbs_content;
-	private Calendar bbs_date;
+	private String bbs_date;
 	private int reply_id;
 	
 	public int getBbs_id() {
@@ -59,6 +58,14 @@ public class BBS {
 		this.teacher_id = teacher_id;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getBbs_content() {
 		return bbs_content;
 	}
@@ -67,11 +74,11 @@ public class BBS {
 		this.bbs_content = bbs_content;
 	}
 	
-	public Calendar getBbs_date() {
+	public String getBbs_date() {
 		return bbs_date;
 	}
 	
-	public void setBbs_date(Calendar bbs_date) {
+	public void setBbs_date(String bbs_date) {
 		this.bbs_date = bbs_date;
 	}
 	
@@ -86,8 +93,6 @@ public class BBS {
 	public static BBS getInstance() {
 		return new BBS();
 	}
-	
-	
 	
 	public static BBS getBBSByBBSId(int bbs_id) {
 		BBS bbs = null;
@@ -111,7 +116,7 @@ public class BBS {
 				bbs.setStudent_id(student_id);
 				bbs.setTeacher_id(teacher_id);
 				bbs.setBbs_content(bbs_content);
-				bbs.setBbs_date(DateFormator.getDateByPattern(bbs_date));
+				bbs.setBbs_date(bbs_date);
 				bbs.setReply_id(reply_id);
 			}
 		} catch (SQLException e) {
@@ -142,7 +147,7 @@ public class BBS {
 				bbs.setStudent_id(student_id);
 				bbs.setTeacher_id(teacher_id);
 				bbs.setBbs_content(bbs_content);
-				bbs.setBbs_date(DateFormator.getDateByPattern(bbs_date));
+				bbs.setBbs_date(bbs_date);
 				bbs.setReply_id(reply_id);
 				res.add(bbs);
 			}
@@ -156,7 +161,7 @@ public class BBS {
 	public static void addBBS(BBS bbs) {
 		String sql = "insert into bbs(class_id, event_id, bbs_content, student_id, teacher_id, bbs_date, reply_id)"
 				+ " values(" + bbs.getClass_id() + ", " + bbs.getEvent_id() + ", '" + bbs.getBbs_content() + "', " 
-				+ bbs.getStudent_id() + ", " + bbs.getTeacher_id() + ", '" + DateFormator.getDateCalendarToString(bbs.getBbs_date()) 
+				+ bbs.getStudent_id() + ", " + bbs.getTeacher_id() + ", '" + bbs.getBbs_date() 
 				+ "', " + bbs.getReply_id() + ");";
 		Connection con = DBHelper.getConnection();
 		DBHelper.execUpdate(con, sql);

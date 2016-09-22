@@ -143,6 +143,14 @@ public class Log {
 	public void setKw(KnowledgeWeight kw) {
 		this.kw = kw;
 	}
+	
+	public String getLearingStatusString() {
+		String res = "\nClasstime:\t" + LearningStatus.getClassTimeString(this.getLs().getClasstime())
+					+ "\nInclass:\t" + LearningStatus.getClassString(this.getLs().getInclass())
+					+ "\nOutclass:\t" + LearningStatus.getClassString(this.getLs().getOutclass())
+					+ "\nMethod:\t" + this.getLs().getMethod();
+		return res;		
+	}
 
 	@Override
 	public String toString() {
@@ -153,10 +161,8 @@ public class Log {
 		+ "\nCourseName:\t"+ this.getCourse().getCourse_name() + "\nSectionId:\t" + this.getSection().getSection_id() 
 		+ "\nSectionName:\t" + this.getSection().getSection_name() + "\nEventId:\t" + this.getEvent().getEvent_id() 
 		+ "\nEventName:\t" + this.getEvent().getEvent_content() + "\nEventType:\t" + this.getEvent().getEvent_type()
-		+ "\nClasstime:\t" + LearningStatus.getClassTimeString(this.getLs().getClasstime())
-		+ "\nInclass:\t" + LearningStatus.getClassString(this.getLs().getInclass()) 
-		+ "\nOutclass:\t" + LearningStatus.getClassString(this.getLs().getOutclass()) 
-		+ "\nMethod:\t" + this.getLs().getMethod() + "\nBBSContent:\t" + this.getBbs().getBbs_content() 
+		+ this.getLearingStatusString()
+		+ "\nBBSContent:\t" + this.getBbs().getBbs_content() 
 		+ "\nHomeworkId:\t" + this.getHw().getHomework_id() + "\nHomeworkTitle:\t" + this.getHw().getHomework_title() 
 		+ "\nHomeworkContent:\t" + this.getHw().getHomework_content() 
 		+ "\nHomeworkAccessory:\t" + this.getHw().getHomework_accessory()
