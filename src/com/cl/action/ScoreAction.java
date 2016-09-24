@@ -93,6 +93,11 @@ public class ScoreAction extends ActionSupport {
 			res.get(i).setReviewandpreview(new BigDecimal(res.get(i).getReviewandpreview()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		}
 		
+		stulist.clear();
+		for (int i = 0; i < res.size(); i++) 
+			stulist.add(Student.getStudentByStudentId(res.get(i).getStudent_id()));
+		
+		act.put("studentlist", stulist);
 		act.put("section_name", section_name);
 		act.put("sectioncolumns", columns);
 		act.put("scorearray", res);

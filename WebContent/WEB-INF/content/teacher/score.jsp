@@ -7,8 +7,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Score</title>
@@ -20,53 +21,35 @@
 			<s:action name="sidebar_topframe" executeResult="true"></s:action>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-3 well">
 				<s:action name="sidebar_tea_eventlist" executeResult="true"></s:action>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
-				<%
-					int section_id = ((Integer)request.getSession().getAttribute("section_id")).intValue();
-					ArrayList<String> columns = (ArrayList<String>)request.getAttribute("sectioncolumns");
-					ArrayList<SectionScore> scorearray = (ArrayList<SectionScore>)request.getAttribute("scorearray");
-					String section_name = (String)request.getAttribute("section_name");
-				%>
 				<div class="row">
-					<h2><%=section_name %></h2>
+					<h2>${section_name}</h2>
 					<form action="teacher_updatescore" method="post">
 						<table class="table table-bordered table-hover"> 
 							<tr>
 								<td>编号</td>
-								<% for (int i = 0; i < columns.size(); i++) {%>
-									<td><%=columns.get(i) %></td>
-								<% } %>
+								<c:forEach items="${sectioncolumns}" var="cl">
+									<td>${cl}</td>
+								</c:forEach>
 							</tr>
-							<% 
-								for (int i = 0; i < scorearray.size(); i++) {
-									SectionScore sectionscore = scorearray.get(i);
-									Student student = Student.getStudentByStudentId(sectionscore.getStudent_id());
-									double listening = new BigDecimal(sectionscore.getListening()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-									double answer = new BigDecimal(sectionscore.getAnswer()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-									double attendance = new BigDecimal(sectionscore.getAttendance()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-									double homework = new BigDecimal(sectionscore.getHomework()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-									double experiment = new BigDecimal(sectionscore.getExperiment()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-									double reviewandpreview = new BigDecimal(sectionscore.getReviewandpreview()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-							%>
+							<c:forEach items="${scorearray}" var="score" varStatus="st">
 								<tr>
-									<td><input name="sectionscore[<%=i %>].student_id" value="<%=sectionscore.getStudent_id()%>" 
+									<td><input name="sectionscore[${st.index}].student_id" value="${score.student_id}" 
 										style="border: 0px; background-color: transparent; width: 10px;">
 									</td>
-									<td><%=student.getLoginname() %></td>
-									<td><%=student.getName() %></td>
-									<td><input name="sectionscore[<%=i %>].listening" value="<%=listening%>" style="width: 60px;"></td>
-									<td><input name="sectionscore[<%=i %>].answer" value="<%=answer%>" style="width: 60px;"></td>
-									<td><input name="sectionscore[<%=i %>].attendance" value="<%=attendance%>" style="width: 60px;"></td>
-									<td><input name="sectionscore[<%=i %>].homework" value="<%=homework%>" style="width: 60px;"></td>
-									<td><input name="sectionscore[<%=i %>].experiment" value="<%=experiment%>" style="width: 60px;"></td>
-									<td><input name="sectionscore[<%=i %>].reviewandpreview" value="<%=reviewandpreview%>" style="width: 60px;"></td>
+									<td>${studentlist[st.index].loginname}</td>
+									<td>${studentlist[st.index].name}</td>
+									<td><input name="sectionscore[${st.index}].answer" value="${score.answer}" style="width: 60px;"></td>
+									<td><input name="sectionscore[${st.index}].listening" value="${score.listening}" style="width: 60px;"></td>
+									<td><input name="sectionscore[${st.index}].attendance" value="${score.attendance}" style="width: 60px;"></td>
+									<td><input name="sectionscore[${st.index}].homework" value="${score.homework}" style="width: 60px;"></td>
+									<td><input name="sectionscore[${st.index}].experiment" value="${score.experiment}" style="width: 60px;"></td>
+									<td><input name="sectionscore[${st.index}].reviewandpreview" value="${score.reviewandpreview}" style="width: 60px;"></td>
 								</tr>
-							<%
-								}
-							%>
+							</c:forEach>
 						</table>
 						<button type="submit" class="btn btn-success">更新</button>
 					</form>

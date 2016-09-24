@@ -33,7 +33,7 @@ teacher/homework.jsp
 ~~teacher/loginform.jsp~~
 ~~teacher/manageevent.jsp~~
 ~~teacher/managesection.jsp~~
-teacher/score.jsp
+~~teacher/score.jsp~~
 teacher/scorehomework.jsp
 ~~teacher/sectionwelcome.jsp~~
 teacher/summary.jsp
