@@ -57,7 +57,7 @@ public class WeightAction extends ActionSupport {
 			for (int i = 0; i < Columns.length; i++)
 				columns.add(Columns[i]);
 			act.put("columns", columns);
-			act.put("weightlist", kw);
+			act.put("knowledgeweight", kw);
 			act.getSession().remove("event_id");
 		}
 		else {

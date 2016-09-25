@@ -7,12 +7,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ScoreHomework</title>
 <link rel="stylesheet" href="public/bower_components/bootstrap/dist/css/bootstrap.css">
+<script type="text/javascript">
+	function updateScore(index, student_id, score) {
+		var parent=document.getElementById("student"+student_id+"homeworkscore");
+		var child=document.createElement("input");
+		var former=document.getElementById("student"+student_id+"nowhomeworkscore")
+		child.name="sectionscore["+index+"].homework";
+		child.value=score;
+		child.min=0;
+		child.max=100;
+		child.step=0.5;
+		parent.removeChild(former);
+		parent.appendChild(child);
+	}
+</script>
 </head>
 <body>
 	<div class="container">
@@ -25,87 +40,79 @@
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 				<h2>批改作业</h2><a href="teacher_managehomework">返回作业列表</a>
-				<%
-					ArrayList<HomeworkStudent> list = (ArrayList<HomeworkStudent>)request.getAttribute("homeworklist");
-					Homework hw = (Homework)request.getAttribute("homework");
-				%>
 				<h5>作业内容</h5>
 				<div class="well">
-					<p><%=hw.getHomework_content() %></p>
+					<p>${homework.homework_content}</p>
 				</div>
-				<% if (hw.getHomework_accessory() != null) { %>
-				<h5>附件下载</h5>
-				<p><%=hw.getHomework_accessory() %>
-					<a href="main_homeworkdownload?type=homeworkaccessory&filename=<%=hw.getHomework_accessory()%>">
-						<span class="glyphicon glyphicon-download"></span>
-					</a>
-				</p>
-				<% } %>
+				<c:if test="${! empty homework.homework_accessory}">
+					<h5>附件下载</h5>
+					<p>${homework.homework_accessory}
+						<a href="main_homeworkdownload?type=homeworkaccessory&filename=${homework.homework_accessory}">
+							<span class="glyphicon glyphicon-download"></span>
+						</a>
+					</p>
+				</c:if>
 				<hr>
-				<% if (list.size() > 0) { %>
-				<form action="teacher_scorehomework?section_id=<%=hw.getSection_id() %>&homework_id=<%=hw.getHomework_id() %>" method="post">
-					<table class="table table-hover table-condensed">
-						<thead>
-							<tr>
-								<td>学生编号</td>
-								<td>学生姓名</td>
-								<td>备注</td>
-								<td>附件</td>
-								<td>评分</td>
-								<td>修改</td>
-							</tr>
-						</thead>
-						<tbody>
-							<%
-								for (int i = 0; i < list.size(); i++) {
-									HomeworkStudent hws = list.get(i);
-									Student stu = Student.getStudentByStudentId(hws.getStudent_id());
-							%>
-							<tr>
-								<td><input name="sectionscore[<%=i %>].student_id" value="<%=stu.getId()%>" 
-										style="border: 0px; background-color: transparent; width: 10px;"></td>
-								<td><%=stu.getName() %></td>
-								<td><%=hws.getHomeworkstudent_comment() %></td>
-								<td><%=hws.getHomeworkstudent_accessory() %>
-									<a href="main_homeworkdownload?type=studentaccessory&filename=<%=hws.getStudent_id() %>_<%=hws.getHomeworkstudent_accessory()%>&homework_id=<%=hws.getHomework_id()%>">
-										<span class="glyphicon glyphicon-download"></span>
-									</a>
-								</td>
-								<%
-									double score = new BigDecimal(SectionScore.getHomeworkScoreByStudentIdAndSectionId(hw.getSection_id(), stu.getId())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-									if (score == -1.0) {
-								%>
-									<td><input name="sectionscore[<%=i %>].homework" min="0" max="100" step="0.5"></td>
-									<td></td>
-								<% } else {%>
-									<td id="student<%=hws.getStudent_id() %>homeworkscore"><p id="student<%=hws.getStudent_id() %>nowhomeworkscore"><%=score %></p></td>
-									<td><a onclick="javascript:updateScore(<%=i%>, <%=hws.getStudent_id()%>, <%=score%>); return false;" href="#"><span class="glyphicon glyphicon-pencil"></span></a></td>
-								<% } %>
-							</tr>
-							<% } %>
-						</tbody>
-					</table>
-					<button class="btn btn-success btn-sm" type="submit">提交</button>
-				</form>
-				<% } else { %>
-				<p><strong>学生还未提交作业</strong></p>
-				<% } %>
+				<c:choose>
+					<c:when test="${! empty homeworklist}">
+						<form action="teacher_scorehomework?section_id=${homework.section_id}&homework_id=${homework.homework_id}" method="post">
+							<table class="table table-hover table-condensed">
+								<thead>
+									<tr>
+										<td>学生编号</td>
+										<td>学生姓名</td>
+										<td>备注</td>
+										<td>附件</td>
+										<td>评分</td>
+										<td>修改</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${homeworklist}" var="hws" varStatus="st">
+										<tr>
+											<td><input name="sectionscore[${st.index}].student_id" value="${student[st.index].id}" 
+													style="border: 0px; background-color: transparent; width: 10px;"></td>
+											<td>${student[st.index].name}</td>
+											<td>${hws.homeworkstudent_comment}</td>
+											<c:choose>
+												<c:when test="${! empty hws.homeworkstudent_accessory}">
+													<td>${hws.homeworkstudent_accessory}
+														<a href="main_homeworkdownload?type=studentaccessory&filename=${hws.student_id}_${hws.homeworkstudent_accessory}&homework_id=${hws.homework_id}">
+															<span class="glyphicon glyphicon-download"></span>
+														</a>
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td>无附件</td>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
+												<c:when test="${score[st.index] != -1.0}">
+													<td><input name="sectionscore[${st.index}].homework" min="0" max="100" step="0.5"></td>
+													<td></td>
+												</c:when>
+												<c:otherwise>
+													<td id="student${hws.student_id}homeworkscore"><p id="student${hws.student_id}nowhomeworkscore">${score[st.index]}</p></td>
+													<td>
+														<a onclick="javascript:updateScore(${st.index}, ${hws.student_id}, ${score[st.index]}); return false;" href="#">
+															<span class="glyphicon glyphicon-pencil"></span>
+														</a>
+													</td>
+												</c:otherwise>
+											</c:choose>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<button class="btn btn-success btn-sm" type="submit">提交</button>
+						</form>
+					</c:when>
+					<c:otherwise>
+						<p><strong>学生还未提交作业</strong></p>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		function updateScore(index, student_id, score) {
-			var parent=document.getElementById("student"+student_id+"homeworkscore");
-			var child=document.createElement("input");
-			var former=document.getElementById("student"+student_id+"nowhomeworkscore")
-			child.name="sectionscore["+index+"].homework";
-			child.value=score;
-			child.min=0;
-			child.max=100;
-			child.step=0.5;
-			parent.removeChild(former);
-			parent.appendChild(child);
-		}
-	</script>
 </body>
 </html>

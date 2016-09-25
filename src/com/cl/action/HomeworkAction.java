@@ -1,6 +1,7 @@
 package com.cl.action;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -9,6 +10,7 @@ import org.apache.struts2.ServletActionContext;
 import com.cl.dao.Homework;
 import com.cl.dao.HomeworkStudent;
 import com.cl.dao.Section;
+import com.cl.dao.SectionScore;
 import com.cl.dao.Student;
 import com.cl.dao.Teacher;
 import com.cl.util.FileFunc;
@@ -85,6 +87,14 @@ public class HomeworkAction extends ActionSupport {
 				return a.getSection_id() - b.getSection_id();
 			}
 		});
+		ArrayList<String> sectionname = new ArrayList<>();
+		for (int i = 0; i < homework.size(); i++) {
+			String name = "";
+			if (homework.get(i).getSection_id() != -1) {
+				name = Section.getSectionBySectionId(homework.get(i).getSection_id()).getSection_name();
+			}
+			sectionname.add(name);
+		}
 		
 		if (role.equals("student")) {
 			ArrayList<HomeworkStudent> homeworkstudent = new ArrayList<>();
@@ -96,8 +106,9 @@ public class HomeworkAction extends ActionSupport {
 		}
 		else if (role.equals("teacher")) {
 			ArrayList<Section> sectionlist = Section.getSectionListByCourseId(course_id);
-			act.put("sectionlist", sectionlist); // for teacher
+			act.put("sectionlist", sectionlist);
 		}
+		act.put("sectionname", sectionname);
 		act.put("homeworklist", homework);
 		act.put("user_id", new Integer(user_id));
 		return SUCCESS;
@@ -290,9 +301,18 @@ public class HomeworkAction extends ActionSupport {
 		else
 			homework_id = ((Integer)act.getSession().get("homework_id")).intValue();
 		
-		ArrayList<HomeworkStudent> res = HomeworkStudent.getHomeworkStudentListByHomeworkId(homework_id);
 		Homework hw = Homework.getHomeworkByHomeworkId(homework_id);
+		ArrayList<HomeworkStudent> res = HomeworkStudent.getHomeworkStudentListByHomeworkId(homework_id);
+		ArrayList<Student> studentlist = new ArrayList<>();
+		ArrayList<Double> score = new ArrayList<>();
+		for (int i = 0; i < res.size(); i++) {
+			studentlist.add(Student.getStudentByStudentId(res.get(i).getStudent_id()));
+			BigDecimal s = new BigDecimal(SectionScore.getHomeworkScoreByStudentIdAndSectionId(hw.getSection_id(), res.get(i).getStudent_id()));
+			score.add(s.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		}
 		
+		act.put("score", score);
+		act.put("student", studentlist);
 		act.put("homework", hw);
 		act.put("homeworklist", res);
 		return SUCCESS;

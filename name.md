@@ -29,14 +29,14 @@ student/selectcourse.jsp
 ~~student/welcome.jsp~~
 ~~teacher/eventinfo.jsp~~
 ~~teacher/eventwelcome.jsp~~
-teacher/homework.jsp
+~~teacher/homework.jsp~~
 ~~teacher/loginform.jsp~~
 ~~teacher/manageevent.jsp~~
 ~~teacher/managesection.jsp~~
 ~~teacher/score.jsp~~
-teacher/scorehomework.jsp
+~~teacher/scorehomework.jsp~~
 ~~teacher/sectionwelcome.jsp~~
 teacher/summary.jsp
-teacher/updateknowledgeweight.jsp
+~~teacher/updateknowledgeweight.jsp~~
 teacher/updatesectionweight.jsp
 ~~teacher/welcome.jsp~~

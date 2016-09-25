@@ -35,6 +35,9 @@ function changeModal(homework_id) {
 			<div class="col-md-8 col-md-offset-1">
 				<h2>作业列表</h2>
 				<c:forEach items="${homeworklist}" var="hw" varStatus="st">
+					<c:if test="${st.index == 0 || hw[st.index].section_id != hw[st.index - 1].section_id}">
+						<h4>章节：${sectionname[st.index]}</h4>
+					</c:if>
 					<div class="panel-group" id="homeworkstudent${hw.homework_id}" role="tablist" aria-multiselectable="true">
 						<div class="panel panel-default">
 							<div class="panel-heading" role="tab" id="headinghomeworkstudent${hw.homework_id}">
